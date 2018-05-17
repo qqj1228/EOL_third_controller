@@ -1,0 +1,17 @@
+USE master;  
+GO
+IF DB_ID (N'JAC') IS NOT NULL
+    DROP DATABASE JAC;
+GO
+CREATE DATABASE JAC
+ON
+( NAME = JAC,
+    FILENAME = N'D:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS2014\MSSQL\DATA\JAC.mdf',
+    SIZE = 5,
+    FILEGROWTH = 1 )
+LOG ON
+( NAME = JAC_log,
+    FILENAME = N'D:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS2014\MSSQL\DATA\JAC_log.ldf',
+    SIZE = 5MB,
+    FILEGROWTH = 1MB );
+GO
