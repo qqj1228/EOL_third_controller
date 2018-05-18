@@ -40,7 +40,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		if (m_iWorkStation > 4 && m_iWorkStation <= 0)
 		{
 			cout << "Read Work_Station failed, using default value" << endl;
-			m_lpLog->TraceError("Read Work_Station failed, using default value");
+			m_lpLog->TRACE_ERR("Read Work_Station failed, using default value");
 			m_iWorkStation = 1;
 		}
 
@@ -52,7 +52,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 			if (!strcmp(buf, ""))
 			{
 				cout << "Read " << m_SendFile[i].strName << " in Send_File_Path failed, using default value" << endl;
-				m_lpLog->TraceError("Read %s in Send_File_Path failed, using default value", m_SendFile[i].strName.c_str());
+				m_lpLog->TRACE_ERR("Read %s in Send_File_Path failed, using default value", m_SendFile[i].strName.c_str());
 				m_SendFile[i].strFilePath = "Send_" + m_SendFile[i].strName + "_%VIN%.ini";
 			}
 		}
@@ -65,7 +65,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 			if (!strcmp(buf, ""))
 			{
 				cout << "Read " << m_ReceFile[i].strName << " in Rece_File_Path failed, using default value" << endl;
-				m_lpLog->TraceError("Read %s in Rece_File_Path failed, using default value", m_ReceFile[i].strName.c_str());
+				m_lpLog->TRACE_ERR("Read %s in Rece_File_Path failed, using default value", m_ReceFile[i].strName.c_str());
 				m_ReceFile[i].strFilePath = "Rece_" + m_ReceFile[i].strName + "_%VIN%.ini";
 			}
 		}
@@ -117,7 +117,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		if (!dwResult)
 		{
 			cout << "Writing Work_Station failed" << endl;
-			m_lpLog->TraceError("Writing Work_Station failed");
+			m_lpLog->TRACE_ERR("Writing Work_Station failed");
 		}
 		m_iWorkStation = 1;
 
@@ -134,7 +134,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		else
 		{
 			cout << "Writing work_station comment failed" << endl;
-			m_lpLog->TraceError("Writing work_station comment failed");
+			m_lpLog->TRACE_ERR("Writing work_station comment failed");
 		}
 		outfs.close();
 
@@ -146,7 +146,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 			if (!dwResult)
 			{
 				cout << "Writing " << m_SendFile[i].strName << " in Send_File_Path failed" << endl;
-				m_lpLog->TraceError("Writing %s in Send_File_Path failed", m_SendFile[i].strName.c_str());
+				m_lpLog->TRACE_ERR("Writing %s in Send_File_Path failed", m_SendFile[i].strName.c_str());
 			}
 		}
 
@@ -158,7 +158,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		else
 		{
 			cout << "Writing Send_File_Path comment failed" << endl;
-			m_lpLog->TraceError("Writing Send_File_Path comment failed");
+			m_lpLog->TRACE_ERR("Writing Send_File_Path comment failed");
 		}
 		outfs.close();
 
@@ -170,7 +170,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 			if (!dwResult)
 			{
 				cout << "Writing " << m_ReceFile[i].strName << " in Rece_File_Path failed" << endl;
-				m_lpLog->TraceError("Writing %s in Rece_File_Path failed", m_ReceFile[i].strName.c_str());
+				m_lpLog->TRACE_ERR("Writing %s in Rece_File_Path failed", m_ReceFile[i].strName.c_str());
 			}
 		}
 
@@ -182,7 +182,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		else
 		{
 			cout << "Writing Rece_File_Path comment failed" << endl;
-			m_lpLog->TraceError("Writing Rece_File_Path comment failed");
+			m_lpLog->TRACE_ERR("Writing Rece_File_Path comment failed");
 		}
 		outfs.close();
 
@@ -190,7 +190,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		if (!dwResult)
 		{
 			cout << "Writing IP of DataBase failed" << endl;
-			m_lpLog->TraceError("Writing IP of DataBase failed");
+			m_lpLog->TRACE_ERR("Writing IP of DataBase failed");
 		}
 		m_strIP = "127.0.0.1";
 
@@ -198,7 +198,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		if (!dwResult)
 		{
 			cout << "Writing Port of DataBase failed" << endl;
-			m_lpLog->TraceError("Writing Port of DataBase failed");
+			m_lpLog->TRACE_ERR("Writing Port of DataBase failed");
 		}
 		m_strPort = "2272";
 
@@ -206,7 +206,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		if (!dwResult)
 		{
 			cout << "Writing User of DataBase failed" << endl;
-			m_lpLog->TraceError("Writing User of DataBase failed");
+			m_lpLog->TRACE_ERR("Writing User of DataBase failed");
 		}
 		m_strUser = "sa";
 
@@ -214,7 +214,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		if (!dwResult)
 		{
 			cout << "Writing Pwd of DataBase failed" << endl;
-			m_lpLog->TraceError("Writing Pwd of DataBase failed");
+			m_lpLog->TRACE_ERR("Writing Pwd of DataBase failed");
 		}
 		m_strPwd = "sh49";
 
@@ -222,7 +222,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		if (!dwResult)
 		{
 			cout << "Writing DBName of DataBase failed" << endl;
-			m_lpLog->TraceError("Writing DBName of DataBase failed");
+			m_lpLog->TRACE_ERR("Writing DBName of DataBase failed");
 		}
 		m_strDBName = "JAC";
 
@@ -237,7 +237,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		if (!dwResult)
 		{
 			cout << "Writing INI_Config of Communication failed" << endl;
-			m_lpLog->TraceError("Writing INI_Config of Communication failed");
+			m_lpLog->TRACE_ERR("Writing INI_Config of Communication failed");
 		}
 		m_strINICfgFile = "./config/INI_config.ini";
 
@@ -245,7 +245,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		if (!dwResult)
 		{
 			cout << "Writing Sleep_Time of Communication failed" << endl;
-			m_lpLog->TraceError("Writing Sleep_Time in Communication failed");
+			m_lpLog->TRACE_ERR("Writing Sleep_Time in Communication failed");
 		}
 		m_iSleepTime = 500;
 
@@ -257,7 +257,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		else
 		{
 			cout << "Writing Sleep_Time comment failed" << endl;
-			m_lpLog->TraceError("Writing Sleep_Time comment failed");
+			m_lpLog->TRACE_ERR("Writing Sleep_Time comment failed");
 		}
 		outfs.close();
 
@@ -265,7 +265,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		if (!dwResult)
 		{
 			cout << "Writing Timeout of Communication failed" << endl;
-			m_lpLog->TraceError("Writing Timeout in Communication failed");
+			m_lpLog->TRACE_ERR("Writing Timeout in Communication failed");
 		}
 		m_iTimeout = 600;
 
@@ -277,7 +277,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		else
 		{
 			cout << "Writing Timeout comment failed" << endl;
-			m_lpLog->TraceError("Writing Timeout comment failed");
+			m_lpLog->TRACE_ERR("Writing Timeout comment failed");
 		}
 		outfs.close();
 
@@ -285,7 +285,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		if (!dwResult)
 		{
 			cout << "Writing Port of Serial_Port failed" << endl;
-			m_lpLog->TraceError("Writing Port of Serial_Port failed");
+			m_lpLog->TRACE_ERR("Writing Port of Serial_Port failed");
 		}
 		m_SerialPort.dwPort = 2;
 
@@ -293,7 +293,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		if (!dwResult)
 		{
 			cout << "Writing Baud_Rate of Serial_Port failed" << endl;
-			m_lpLog->TraceError("Writing Baud_Rate of Serial_Port failed");
+			m_lpLog->TRACE_ERR("Writing Baud_Rate of Serial_Port failed");
 		}
 		m_SerialPort.dwBaudRate = 9600;
 
@@ -301,7 +301,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		if (!dwResult)
 		{
 			cout << "Writing Parity of Serial_Port failed" << endl;
-			m_lpLog->TraceError("Writing Parity of Serial_Port failed");
+			m_lpLog->TRACE_ERR("Writing Parity of Serial_Port failed");
 		}
 		m_SerialPort.btParity = NOPARITY;
 
@@ -317,7 +317,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		else
 		{
 			cout << "Writing Parity comment failed" << endl;
-			m_lpLog->TraceError("Writing Parity comment failed");
+			m_lpLog->TRACE_ERR("Writing Parity comment failed");
 		}
 		outfs.close();
 
@@ -325,7 +325,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		if (!dwResult)
 		{
 			cout << "Writing Byte_Size of Serial_Port failed" << endl;
-			m_lpLog->TraceError("Writing Byte_Size of Serial_Port failed");
+			m_lpLog->TRACE_ERR("Writing Byte_Size of Serial_Port failed");
 		}
 		m_SerialPort.btByteSize = 8;
 
@@ -333,7 +333,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		if (!dwResult)
 		{
 			cout << "Writing Stop_Bits of Serial_Port failed" << endl;
-			m_lpLog->TraceError("Writing Stop_Bits of Serial_Port failed");
+			m_lpLog->TRACE_ERR("Writing Stop_Bits of Serial_Port failed");
 		}
 		m_SerialPort.btStopBits = ONESTOPBIT;
 
@@ -347,7 +347,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		else
 		{
 			cout << "Writing Stop_Bits comment failed" << endl;
-			m_lpLog->TraceError("Writing Stop_Bits comment failed");
+			m_lpLog->TRACE_ERR("Writing Stop_Bits comment failed");
 		}
 		outfs.close();
 	}

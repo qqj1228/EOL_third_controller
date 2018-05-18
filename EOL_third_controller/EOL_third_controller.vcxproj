@@ -158,7 +158,6 @@
   <ItemGroup>
     <ClInclude Include="CADOConn.h" />
     <ClInclude Include="CConfig.h" />
-    <ClInclude Include="CDBTable.h" />
     <ClInclude Include="CModel.h" />
     <ClInclude Include="CnComm.h" />
     <ClInclude Include="Logger.h" />
@@ -169,7 +168,6 @@
   <ItemGroup>
     <ClCompile Include="CADOConn.cpp" />
     <ClCompile Include="CConfig.cpp" />
-    <ClCompile Include="CDBTable.cpp" />
     <ClCompile Include="EOL_third_controller.cpp" />
     <ClCompile Include="CModel.cpp" />
     <ClCompile Include="Logger.cpp" />

@@ -37,12 +37,12 @@ bool CADOConn::OnInitADOConn()
 		if (GetOSVer() > 2)
 		{
 			cout << "COM Error: " << e.Description() << endl;
-			m_lpLog->TraceError("COM Error: %s", (char *)e.Description());
+			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
 		}
 		else
 		{
 			cout << "COM Error: " << e.ErrorMessage() << endl;
-			m_lpLog->TraceError("COM Error: %s", (char *)e.ErrorMessage());
+			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.ErrorMessage());
 		}
 		return false;
 	}
@@ -59,19 +59,19 @@ _RecordsetPtr& CADOConn::GetRecordSet(_bstr_t bstrSQL)
 		m_pRecordset.CreateInstance(__uuidof(Recordset));
 		// 取得表中的记录
 		m_pRecordset->Open(bstrSQL, m_pConnection.GetInterfacePtr(), adOpenDynamic, adLockOptimistic, adCmdText);
-		m_lpLog->TraceInfo("SQL: %s", (char *)bstrSQL);
+		m_lpLog->TRACE_INFO("SQL: %s", (char *)bstrSQL);
 	}
 	catch (_com_error e)
 	{
 		if (GetOSVer() > 2)
 		{
 			cout << "COM Error: " << e.Description() << endl;
-			m_lpLog->TraceError("COM Error: %s", (char *)e.Description());
+			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
 		}
 		else
 		{
 			cout << "COM Error: " << e.ErrorMessage() << endl;
-			m_lpLog->TraceError("COM Error: %s", (char *)e.ErrorMessage());
+			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.ErrorMessage());
 		}
 	}
 	// 返回记录集
@@ -87,7 +87,7 @@ bool CADOConn::ExecuteSQL(_bstr_t bstrSQL)
 		if (m_pConnection == NULL)
 			OnInitADOConn();
 		m_pConnection->Execute(bstrSQL, NULL, adCmdText);
-		m_lpLog->TraceInfo("SQL: %s", (char *)bstrSQL);
+		m_lpLog->TRACE_INFO("SQL: %s", (char *)bstrSQL);
 		return true;
 	}
 	catch (_com_error e)
@@ -95,12 +95,12 @@ bool CADOConn::ExecuteSQL(_bstr_t bstrSQL)
 		if (GetOSVer() > 2)
 		{
 			cout << "COM Error: " << e.Description() << endl;
-			m_lpLog->TraceError("COM Error: %s", (char *)e.Description());
+			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
 		}
 		else
 		{
 			cout << "COM Error: " << e.ErrorMessage() << endl;
-			m_lpLog->TraceError("COM Error: %s", (char *)e.ErrorMessage());
+			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.ErrorMessage());
 		}
 		return false;
 	}
@@ -120,12 +120,12 @@ void CADOConn::ExitConnect()
 		if (GetOSVer() > 2)
 		{
 			cout << "COM Error: " << e.Description() << endl;
-			m_lpLog->TraceError("COM Error: %s", (char *)e.Description());
+			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
 		}
 		else
 		{
 			cout << "COM Error: " << e.ErrorMessage() << endl;
-			m_lpLog->TraceError("COM Error: %s", (char *)e.ErrorMessage());
+			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.ErrorMessage());
 		}
 	}
 	//释放环境
@@ -135,7 +135,7 @@ void CADOConn::ExitConnect()
 string CADOConn::GetRecord(_bstr_t bstrField, size_t iIndex)
 {
 	_variant_t var = "";
-	string str = "";
+	string str;
 	try
 	{
 		for (size_t i = 0; i < iIndex && !m_pRecordset->adoEOF; i++)
@@ -150,13 +150,14 @@ string CADOConn::GetRecord(_bstr_t bstrField, size_t iIndex)
 		if (GetOSVer() > 2)
 		{
 			cout << "COM Error: " << e.Description() << endl;
-			m_lpLog->TraceError("COM Error: %s", (char *)e.Description());
+			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
 		}
 		else
 		{
 			cout << "COM Error: " << e.ErrorMessage() << endl;
-			m_lpLog->TraceError("COM Error: %s", (char *)e.ErrorMessage());
+			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.ErrorMessage());
 		}
+		return str;
 	}
 	return str;
 }
@@ -176,12 +177,12 @@ void CADOConn::RecordSetClose()
 		if (GetOSVer() > 2)
 		{
 			cout << "COM Error: " << e.Description() << endl;
-			m_lpLog->TraceError("COM Error: %s", (char *)e.Description());
+			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
 		}
 		else
 		{
 			cout << "COM Error: " << e.ErrorMessage() << endl;
-			m_lpLog->TraceError("COM Error: %s", (char *)e.ErrorMessage());
+			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.ErrorMessage());
 		}
 	}
 }
@@ -200,12 +201,12 @@ _RecordsetPtr& CADOConn::GetSchemaTables()
 		if (GetOSVer() > 2)
 		{
 			cout << "COM Error: " << e.Description() << endl;
-			m_lpLog->TraceError("COM Error: %s", (char *)e.Description());
+			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
 		}
 		else
 		{
 			cout << "COM Error: " << e.ErrorMessage() << endl;
-			m_lpLog->TraceError("COM Error: %s", (char *)e.ErrorMessage());
+			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.ErrorMessage());
 		}
 	}
 	return m_pRecordset;
@@ -225,12 +226,12 @@ _RecordsetPtr& CADOConn::GetSchemaColumns(_bstr_t bstrSQL)
 		if (GetOSVer() > 2)
 		{
 			cout << "COM Error: " << e.Description() << endl;
-			m_lpLog->TraceError("COM Error: %s", (char *)e.Description());
+			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
 		}
 		else
 		{
 			cout << "COM Error: " << e.ErrorMessage() << endl;
-			m_lpLog->TraceError("COM Error: %s", (char *)e.ErrorMessage());
+			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.ErrorMessage());
 		}
 	}
 	return m_pRecordset;

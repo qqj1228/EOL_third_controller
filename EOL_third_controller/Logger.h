@@ -57,6 +57,11 @@ public:
 	void TraceInfo(const char * strInfo, ...);
 	//设置写日志级别
 	void SetLogLevel(EnumLogLevel nLevel);
+	// 输出日志带文件名, 行号, 函数名
+#define TRACE_FATAL(fmt,...) TraceFatal("%s(%d)<%s> "##fmt, strrchr(__FILE__,'\\')+1, __LINE__, __FUNCTION__, ##__VA_ARGS__)
+#define TRACE_ERR(fmt,...) TraceError("%s(%d)<%s> "##fmt, strrchr(__FILE__,'\\')+1, __LINE__, __FUNCTION__, ##__VA_ARGS__)
+#define TRACE_WARN(fmt,...) TraceWarning("%s(%d)<%s> "##fmt, strrchr(__FILE__,'\\')+1, __LINE__, __FUNCTION__, ##__VA_ARGS__)
+#define TRACE_INFO(fmt,...) TraceInfo("%s(%d)<%s> "##fmt, strrchr(__FILE__,'\\')+1, __LINE__, __FUNCTION__, ##__VA_ARGS__)
 private:
 	//写文件操作
 	void Trace(const char * strInfo);
