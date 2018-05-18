@@ -177,8 +177,8 @@ CREATE TABLE JAC.dbo.HLAConfig
 	FogHeight int NULL, -- 车型参数 - 雾灯高度
 	FogDistance int NULL, -- 车型参数 - 雾灯间距
 
-	LowIten_Min float NULL, -- 合格范围 - 近光光强最小值
-	LowIten_Max float NULL, -- 合格范围 - 近光光强最大值
+	LowInten_Min float NULL, -- 合格范围 - 近光光强最小值
+	LowInten_Max float NULL, -- 合格范围 - 近光光强最大值
 	LowHor_Mid float NULL, -- 合格范围 - 近光水平偏移中值
 	LowHor_Dev float NULL, -- 合格范围 - 近光水平偏移偏差
 	LowVer_Mid float NULL, -- 合格范围 - 近光垂直偏移中值
@@ -485,8 +485,8 @@ CREATE TABLE JAC.dbo.HLAResult
 	CycleTime int NULL, -- 循环时间
 	TotalResult char(1) NULL, -- 灯光总评, O是合格, X是不合格
 
-	LLowIten float NULL, -- 左灯近光光强数值, O是合格, X是不合格
-	LLowIten_Result char(1) NULL, -- 左灯近光光强评判
+	LLowInten float NULL, -- 左灯近光光强数值, O是合格, X是不合格
+	LLowInten_Result char(1) NULL, -- 左灯近光光强评判
 	LLowHor float NULL, -- 左灯近光水平偏移数值        
 	LLowHor_Result char(1) NULL, -- 左灯近光水平偏移评判
 	LLowVer float NULL, -- 左灯近光垂直偏移数值   
