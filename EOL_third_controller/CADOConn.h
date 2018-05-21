@@ -4,7 +4,7 @@
 #include <comdef.h>
 
 //#import "c:\\Program Files\\Common Files\\System\\ado\\msado15.dll" no_namespace rename("EOF", "adoEOF") rename("BOF", "adoBOF")
-#import "msado15.dll" no_namespace rename("EOF", "adoEOF") rename("BOF", "adoBOF")
+#import ".\\msado15.dll" no_namespace rename("EOF", "adoEOF") rename("BOF", "adoBOF")
 
 class CADOConn
 {
