@@ -36,7 +36,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 
 	if (bFile) // 读INI文件
 	{
-		m_iWorkStation = GetPrivateProfileInt(TEXT("Work_Station"), TEXT("Work_Station"), 0, m_strCfgFile.c_str());
+		m_iWorkStation = GetPrivateProfileInt(TEXT("Work_Station"), _T("Work_Station"), 0, m_strCfgFile.c_str());
 		if (m_iWorkStation > 4 && m_iWorkStation <= 0)
 		{
 			cout << "Read Work_Station failed, using default value" << endl;
@@ -47,7 +47,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		length= this->getSendFileCount();
 		for (int i = 0; i < length; i++)
 		{
-			GetPrivateProfileString(TEXT("Send_File_Path"), m_SendFile[i].strName.c_str(), TEXT(""), buf, BUFSIZ, m_strCfgFile.c_str());
+			GetPrivateProfileString(TEXT("Send_File_Path"), m_SendFile[i].strName.c_str(), _T(""), buf, BUFSIZ, m_strCfgFile.c_str());
 			m_SendFile[i].strFilePath = buf;
 			if (!strcmp(buf, ""))
 			{
@@ -60,7 +60,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		length = this->getReceFileCount();
 		for (int i = 0; i < length; i++)
 		{
-			GetPrivateProfileString(TEXT("Rece_File_Path"), m_ReceFile[i].strName.c_str(), TEXT(""), buf, BUFSIZ, m_strCfgFile.c_str());
+			GetPrivateProfileString(TEXT("Rece_File_Path"), m_ReceFile[i].strName.c_str(), _T(""), buf, BUFSIZ, m_strCfgFile.c_str());
 			m_ReceFile[i].strFilePath = buf;
 			if (!strcmp(buf, ""))
 			{
@@ -70,37 +70,37 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 			}
 		}
 
-		GetPrivateProfileString(TEXT("DataBase"), TEXT("IP"), TEXT("127.0.0.1"), buf, BUFSIZ, m_strCfgFile.c_str());
+		GetPrivateProfileString(_T("DataBase"), _T("IP"), _T("127.0.0.1"), buf, BUFSIZ, m_strCfgFile.c_str());
 		m_strIP = buf;
 
-		GetPrivateProfileString(TEXT("DataBase"), TEXT("Port"), TEXT("2272"), buf, BUFSIZ, m_strCfgFile.c_str());
+		GetPrivateProfileString(_T("DataBase"), _T("Port"), _T("2272"), buf, BUFSIZ, m_strCfgFile.c_str());
 		m_strPort = buf;
 
-		GetPrivateProfileString(TEXT("DataBase"), TEXT("User"), TEXT("sa"), buf, BUFSIZ, m_strCfgFile.c_str());
+		GetPrivateProfileString(_T("DataBase"), _T("User"), _T("sa"), buf, BUFSIZ, m_strCfgFile.c_str());
 		m_strUser = buf;
 
-		GetPrivateProfileString(TEXT("DataBase"), TEXT("Pwd"), TEXT("sh49"), buf, BUFSIZ, m_strCfgFile.c_str());
+		GetPrivateProfileString(_T("DataBase"), _T("Pwd"), _T("sh49"), buf, BUFSIZ, m_strCfgFile.c_str());
 		m_strPwd = buf;
 
-		GetPrivateProfileString(TEXT("DataBase"), TEXT("DBName"), TEXT("JAC"), buf, BUFSIZ, m_strCfgFile.c_str());
+		GetPrivateProfileString(_T("DataBase"), _T("DBName"), _T("JAC"), buf, BUFSIZ, m_strCfgFile.c_str());
 		m_strDBName = buf;
 
-		GetPrivateProfileString(TEXT("Communication"), TEXT("INI_Config"), TEXT("./config/INI_config.ini"), buf, BUFSIZ, m_strCfgFile.c_str());
+		GetPrivateProfileString(_T("Communication"), _T("INI_Config"), _T("./config/INI_config.ini"), buf, BUFSIZ, m_strCfgFile.c_str());
 		m_strINICfgFile = buf;
 
-		m_iSleepTime = GetPrivateProfileInt(TEXT("Communication"), TEXT("Sleep_Time"), 500, m_strCfgFile.c_str());
+		m_iSleepTime = GetPrivateProfileInt(_T("Communication"), _T("Sleep_Time"), 500, m_strCfgFile.c_str());
 
-		m_iTimeout = GetPrivateProfileInt(TEXT("Communication"), TEXT("Timeout"), 600, m_strCfgFile.c_str());
+		m_iTimeout = GetPrivateProfileInt(_T("Communication"), _T("Timeout"), 600, m_strCfgFile.c_str());
 
-		m_SerialPort.dwPort = (DWORD)GetPrivateProfileInt(TEXT("Serial_Port"), TEXT("Port"), 2, m_strCfgFile.c_str());
+		m_SerialPort.dwPort = (DWORD)GetPrivateProfileInt(_T("Serial_Port"), _T("Port"), 2, m_strCfgFile.c_str());
 
-		m_SerialPort.dwBaudRate = (DWORD)GetPrivateProfileInt(TEXT("Serial_Port"), TEXT("Baud_Rate"), 9600, m_strCfgFile.c_str());
+		m_SerialPort.dwBaudRate = (DWORD)GetPrivateProfileInt(_T("Serial_Port"), _T("Baud_Rate"), 9600, m_strCfgFile.c_str());
 
-		m_SerialPort.btParity = (BYTE)GetPrivateProfileInt(TEXT("Serial_Port"), TEXT("Parity"), NOPARITY, m_strCfgFile.c_str());
+		m_SerialPort.btParity = (BYTE)GetPrivateProfileInt(_T("Serial_Port"), _T("Parity"), NOPARITY, m_strCfgFile.c_str());
 
-		m_SerialPort.btByteSize = (BYTE)GetPrivateProfileInt(TEXT("Serial_Port"), TEXT("Byte_Size"), 8, m_strCfgFile.c_str());
+		m_SerialPort.btByteSize = (BYTE)GetPrivateProfileInt(_T("Serial_Port"), _T("Byte_Size"), 8, m_strCfgFile.c_str());
 
-		m_SerialPort.btStopBits = (BYTE)GetPrivateProfileInt(TEXT("Serial_Port"), TEXT("Stop_Bits"), ONESTOPBIT, m_strCfgFile.c_str());
+		m_SerialPort.btStopBits = (BYTE)GetPrivateProfileInt(_T("Serial_Port"), _T("Stop_Bits"), ONESTOPBIT, m_strCfgFile.c_str());
 
 	}
 	else // 生成默认INI文件
@@ -113,7 +113,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		mkMultiDir(strCfgPath);
 
 		DWORD dwResult = 0;
-		dwResult = WritePrivateProfileString(TEXT("Work_Station"), TEXT("Work_Station"), TEXT("1"), m_strCfgFile.c_str());
+		dwResult = WritePrivateProfileString(_T("Work_Station"), _T("Work_Station"), _T("1"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
 			cout << "Writing Work_Station failed" << endl;
@@ -166,7 +166,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		for (int i = 0; i < length; i++)
 		{
 			m_ReceFile[i].strFilePath = "./ReceFile/Rece_" + m_ReceFile[i].strName + "_%VIN%.ini";
-			dwResult = WritePrivateProfileString(TEXT("Rece_File_Path"), m_ReceFile[i].strName.c_str(), m_ReceFile[i].strFilePath.c_str(), m_strCfgFile.c_str());
+			dwResult = WritePrivateProfileString(_T("Rece_File_Path"), m_ReceFile[i].strName.c_str(), m_ReceFile[i].strFilePath.c_str(), m_strCfgFile.c_str());
 			if (!dwResult)
 			{
 				cout << "Writing " << m_ReceFile[i].strName << " in Rece_File_Path failed" << endl;
@@ -186,7 +186,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		outfs.close();
 
-		dwResult = WritePrivateProfileString(TEXT("DataBase"), TEXT("IP"), TEXT("127.0.0.1"), m_strCfgFile.c_str());
+		dwResult = WritePrivateProfileString(_T("DataBase"), _T("IP"), _T("127.0.0.1"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
 			cout << "Writing IP of DataBase failed" << endl;
@@ -194,7 +194,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		m_strIP = "127.0.0.1";
 
-		dwResult = WritePrivateProfileString(TEXT("DataBase"), TEXT("Port"), TEXT("2272"), m_strCfgFile.c_str());
+		dwResult = WritePrivateProfileString(_T("DataBase"), _T("Port"), _T("2272"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
 			cout << "Writing Port of DataBase failed" << endl;
@@ -202,7 +202,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		m_strPort = "2272";
 
-		dwResult = WritePrivateProfileString(TEXT("DataBase"), TEXT("User"), TEXT("sa"), m_strCfgFile.c_str());
+		dwResult = WritePrivateProfileString(_T("DataBase"), _T("User"), _T("sa"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
 			cout << "Writing User of DataBase failed" << endl;
@@ -210,7 +210,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		m_strUser = "sa";
 
-		dwResult = WritePrivateProfileString(TEXT("DataBase"), TEXT("Pwd"), TEXT("sh49"), m_strCfgFile.c_str());
+		dwResult = WritePrivateProfileString(_T("DataBase"), _T("Pwd"), _T("sh49"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
 			cout << "Writing Pwd of DataBase failed" << endl;
@@ -218,7 +218,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		m_strPwd = "sh49";
 
-		dwResult = WritePrivateProfileString(TEXT("DataBase"), TEXT("DBName"), TEXT("JAC"), m_strCfgFile.c_str());
+		dwResult = WritePrivateProfileString(_T("DataBase"), _T("DBName"), _T("JAC"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
 			cout << "Writing DBName of DataBase failed" << endl;
@@ -233,7 +233,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		outfs.close();
 
-		dwResult = WritePrivateProfileString(TEXT("Communication"), TEXT("INI_Config"), TEXT("./config/INI_config.ini"), m_strCfgFile.c_str());
+		dwResult = WritePrivateProfileString(_T("Communication"), _T("INI_Config"), _T("./config/INI_config.ini"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
 			cout << "Writing INI_Config of Communication failed" << endl;
@@ -241,7 +241,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		m_strINICfgFile = "./config/INI_config.ini";
 
-		dwResult = WritePrivateProfileString(TEXT("Communication"), TEXT("Sleep_Time"), TEXT("500"), m_strCfgFile.c_str());
+		dwResult = WritePrivateProfileString(_T("Communication"), _T("Sleep_Time"), _T("500"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
 			cout << "Writing Sleep_Time of Communication failed" << endl;
@@ -261,7 +261,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		outfs.close();
 
-		dwResult = WritePrivateProfileString(TEXT("Communication"), TEXT("Timeout"), TEXT("600"), m_strCfgFile.c_str());
+		dwResult = WritePrivateProfileString(_T("Communication"), _T("Timeout"), _T("600"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
 			cout << "Writing Timeout of Communication failed" << endl;
@@ -281,7 +281,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		outfs.close();
 
-		dwResult = WritePrivateProfileString(TEXT("Serial_Port"), TEXT("Port"), TEXT("2"), m_strCfgFile.c_str());
+		dwResult = WritePrivateProfileString(_T("Serial_Port"), _T("Port"), _T("2"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
 			cout << "Writing Port of Serial_Port failed" << endl;
@@ -289,7 +289,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		m_SerialPort.dwPort = 2;
 
-		dwResult = WritePrivateProfileString(TEXT("Serial_Port"), TEXT("Baud_Rate"), TEXT("9600"), m_strCfgFile.c_str());
+		dwResult = WritePrivateProfileString(_T("Serial_Port"), _T("Baud_Rate"), _T("9600"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
 			cout << "Writing Baud_Rate of Serial_Port failed" << endl;
@@ -297,7 +297,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		m_SerialPort.dwBaudRate = 9600;
 
-		dwResult = WritePrivateProfileString(TEXT("Serial_Port"), TEXT("Parity"), TEXT("NOPARITY"), m_strCfgFile.c_str());
+		dwResult = WritePrivateProfileString(_T("Serial_Port"), _T("Parity"), _T("NOPARITY"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
 			cout << "Writing Parity of Serial_Port failed" << endl;
@@ -321,7 +321,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		outfs.close();
 
-		dwResult = WritePrivateProfileString(TEXT("Serial_Port"), TEXT("Byte_Size"), TEXT("8"), m_strCfgFile.c_str());
+		dwResult = WritePrivateProfileString(_T("Serial_Port"), _T("Byte_Size"), _T("8"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
 			cout << "Writing Byte_Size of Serial_Port failed" << endl;
@@ -329,7 +329,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		m_SerialPort.btByteSize = 8;
 
-		dwResult = WritePrivateProfileString(TEXT("Serial_Port"), TEXT("Stop_Bits"), TEXT("ONESTOPBIT"), m_strCfgFile.c_str());
+		dwResult = WritePrivateProfileString(_T("Serial_Port"), _T("Stop_Bits"), _T("ONESTOPBIT"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
 			cout << "Writing Stop_Bits of Serial_Port failed" << endl;
@@ -477,11 +477,11 @@ void CConfig::getINIConfig()
 	for (int i = 0; i < length; i++)
 	{
 		strSection = "Send_" + m_SendFile[i].strName;
-		m_SendFile[i].section_num = GetPrivateProfileInt(strSection.c_str(), TEXT("section_num"), 0, m_strINICfgFile.c_str());
+		m_SendFile[i].section_num = GetPrivateProfileInt(strSection.c_str(), _T("section_num"), 0, m_strINICfgFile.c_str());
 		for (int j = 0; j < m_SendFile[i].section_num; j++)
 		{
 			strKey = "section" + to_string(j + 1) + "_name";
-			GetPrivateProfileString(strSection.c_str(), strKey.c_str(), TEXT(""), buf, BUFSIZ, m_strINICfgFile.c_str());
+			GetPrivateProfileString(strSection.c_str(), strKey.c_str(), _T(""), buf, BUFSIZ, m_strINICfgFile.c_str());
 			section.strName = buf;
 
 			strKey = "section" + to_string(j + 1) + "_start";
@@ -498,11 +498,11 @@ void CConfig::getINIConfig()
 	for (int i = 0; i < length; i++)
 	{
 		strSection = "Rece_" + m_ReceFile[i].strName;
-		m_ReceFile[i].section_num = GetPrivateProfileInt(strSection.c_str(), TEXT("section_num"), 0, m_strINICfgFile.c_str());
+		m_ReceFile[i].section_num = GetPrivateProfileInt(strSection.c_str(), _T("section_num"), 0, m_strINICfgFile.c_str());
 		for (int j = 0; j < m_ReceFile[i].section_num; j++)
 		{
 			strKey = "section" + to_string(j + 1) + "_name";
-			GetPrivateProfileString(strSection.c_str(), strKey.c_str(), TEXT(""), buf, BUFSIZ, m_strINICfgFile.c_str());
+			GetPrivateProfileString(strSection.c_str(), strKey.c_str(), _T(""), buf, BUFSIZ, m_strINICfgFile.c_str());
 			section.strName = buf;
 
 			strKey = "section" + to_string(j + 1) + "_start";

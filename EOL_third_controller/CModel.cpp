@@ -313,10 +313,9 @@ bool CModel::ReadReceFile()
 	{
 		if (m_ReceFile[0].strName != m_ReceFile[i].strName)
 		{
-			if (!ReadReceFileSingle(i))
-			{
-				flag = false;
-			}
+			// 处理NCACaster和NCATurningAngle结果文件
+			// 这两个检测项目是抽检项目，不一定每次都有，故不处理返回值
+			ReadReceFileSingle(i);
 		}
 	}
 	return flag;
@@ -360,7 +359,7 @@ bool CModel::ReadReceFileSingle(int iIndex)
 		for (int j = iStart; j <= iEnd; j++)
 		{
 			strKey = vFields[j].name;
-			GetPrivateProfileString(strSection.c_str(), strKey.c_str(), TEXT(""), buf, BUFSIZ, m_ReceFile[iIndex].strFilePath.c_str());
+			GetPrivateProfileString(strSection.c_str(), strKey.c_str(), _T(""), buf, BUFSIZ, m_ReceFile[iIndex].strFilePath.c_str());
 			if (!strcmp(buf, ""))
 			{
 				cout << "Read " << strKey << " in " << strSection << " failed" << endl;
