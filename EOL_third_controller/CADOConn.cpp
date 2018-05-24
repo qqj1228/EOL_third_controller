@@ -34,15 +34,12 @@ bool CADOConn::OnInitADOConn()
 	catch (_com_error e)
 	{
 		// 显示错误信息
-		if (GetOSVer() > 2)
-		{
+		if (e.Description() == _bstr_t("")) {
+			cout << "COM Error: " << e.ErrorMessage() << endl;
+			m_lpLog->TRACE_ERR("COM Error: %s", e.ErrorMessage());
+		} else {
 			cout << "COM Error: " << e.Description() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
-		}
-		else
-		{
-			cout << "COM Error: " << e.ErrorMessage() << endl;
-			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.ErrorMessage());
 		}
 		return false;
 	}
@@ -63,15 +60,12 @@ _RecordsetPtr& CADOConn::GetRecordSet(_bstr_t bstrSQL)
 	}
 	catch (_com_error e)
 	{
-		if (GetOSVer() > 2)
-		{
+		if (e.Description() == _bstr_t("")) {
+			cout << "COM Error: " << e.ErrorMessage() << endl;
+			m_lpLog->TRACE_ERR("COM Error: %s", e.ErrorMessage());
+		} else {
 			cout << "COM Error: " << e.Description() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
-		}
-		else
-		{
-			cout << "COM Error: " << e.ErrorMessage() << endl;
-			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.ErrorMessage());
 		}
 	}
 	// 返回记录集
@@ -92,15 +86,12 @@ bool CADOConn::ExecuteSQL(_bstr_t bstrSQL)
 	}
 	catch (_com_error e)
 	{
-		if (GetOSVer() > 2)
-		{
+		if (e.Description() == _bstr_t("")) {
+			cout << "COM Error: " << e.ErrorMessage() << endl;
+			m_lpLog->TRACE_ERR("COM Error: %s", e.ErrorMessage());
+		} else {
 			cout << "COM Error: " << e.Description() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
-		}
-		else
-		{
-			cout << "COM Error: " << e.ErrorMessage() << endl;
-			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.ErrorMessage());
 		}
 		return false;
 	}
@@ -117,15 +108,12 @@ void CADOConn::ExitConnect()
 	}
 	catch (_com_error e)
 	{
-		if (GetOSVer() > 2)
-		{
+		if (e.Description() == _bstr_t("")) {
+			cout << "COM Error: " << e.ErrorMessage() << endl;
+			m_lpLog->TRACE_ERR("COM Error: %s", e.ErrorMessage());
+		} else {
 			cout << "COM Error: " << e.Description() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
-		}
-		else
-		{
-			cout << "COM Error: " << e.ErrorMessage() << endl;
-			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.ErrorMessage());
 		}
 	}
 	//释放环境
@@ -147,15 +135,12 @@ string CADOConn::GetRecord(_bstr_t bstrField, size_t iIndex)
 	}
 	catch (_com_error e)
 	{
-		if (GetOSVer() > 2)
-		{
+		if (e.Description() == _bstr_t("")) {
+			cout << "COM Error: " << e.ErrorMessage() << endl;
+			m_lpLog->TRACE_ERR("COM Error: %s", e.ErrorMessage());
+		} else {
 			cout << "COM Error: " << e.Description() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
-		}
-		else
-		{
-			cout << "COM Error: " << e.ErrorMessage() << endl;
-			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.ErrorMessage());
 		}
 		return str;
 	}
@@ -174,15 +159,12 @@ void CADOConn::RecordSetClose()
 	}
 	catch (_com_error e)
 	{
-		if (GetOSVer() > 2)
-		{
+		if (e.Description() == _bstr_t("")) {
+			cout << "COM Error: " << e.ErrorMessage() << endl;
+			m_lpLog->TRACE_ERR("COM Error: %s", e.ErrorMessage());
+		} else {
 			cout << "COM Error: " << e.Description() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
-		}
-		else
-		{
-			cout << "COM Error: " << e.ErrorMessage() << endl;
-			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.ErrorMessage());
 		}
 	}
 }
@@ -198,15 +180,12 @@ _RecordsetPtr& CADOConn::GetSchemaTables()
 	}
 	catch (_com_error e)
 	{
-		if (GetOSVer() > 2)
-		{
+		if (e.Description() == _bstr_t("")) {
+			cout << "COM Error: " << e.ErrorMessage() << endl;
+			m_lpLog->TRACE_ERR("COM Error: %s", e.ErrorMessage());
+		} else {
 			cout << "COM Error: " << e.Description() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
-		}
-		else
-		{
-			cout << "COM Error: " << e.ErrorMessage() << endl;
-			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.ErrorMessage());
 		}
 	}
 	return m_pRecordset;
@@ -223,15 +202,12 @@ _RecordsetPtr& CADOConn::GetSchemaColumns(_bstr_t bstrSQL)
 	}
 	catch (_com_error e)
 	{
-		if (GetOSVer() > 2)
-		{
+		if (e.Description() == _bstr_t("")) {
+			cout << "COM Error: " << e.ErrorMessage() << endl;
+			m_lpLog->TRACE_ERR("COM Error: %s", e.ErrorMessage());
+		} else {
 			cout << "COM Error: " << e.Description() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
-		}
-		else
-		{
-			cout << "COM Error: " << e.ErrorMessage() << endl;
-			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.ErrorMessage());
 		}
 	}
 	return m_pRecordset;

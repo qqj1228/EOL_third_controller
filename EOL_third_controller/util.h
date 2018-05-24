@@ -16,37 +16,6 @@ static string IntToString(int n)
 	return stream.str();
 }
 
-static int GetOSVer()
-{
-	OSVERSIONINFO   osver;
-	osver.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-	GetVersionEx(&osver);
-	if (osver.dwPlatformId == 2)
-	{
-		if (osver.dwMajorVersion == 5 && osver.dwMinorVersion == 1)
-		{
-			//cout << "OS Version: XP" << endl;
-			return(2);
-		}
-		if (osver.dwMajorVersion == 5 && osver.dwMinorVersion == 2)
-		{
-			//cout << "OS Version: windows 2003" << endl;
-			return(3);
-		}
-		if (osver.dwMajorVersion == 6 && osver.dwMinorVersion == 0)
-		{
-			//cout << "OS Version: vista or 2008" << endl;
-			return(4);
-		}
-		if (osver.dwMajorVersion == 6 && osver.dwMinorVersion == 1)
-		{
-			//cout << "OS Version: 2008 R2 or Windows 7" << endl;
-			return(5);
-		}
-	}
-	return 0;
-}
-
 static string Normalize(string strSouce, size_t iMaxlen)
 {
 	string strResult;

@@ -193,15 +193,12 @@ void CModel::GetTableName(vector<string> *lpvTableName)
 	}
 	catch (_com_error e)
 	{
-		if (GetOSVer() > 2)
-		{
+		if (e.Description() == _bstr_t("")) {
+			cout << "COM Error: " << e.ErrorMessage() << endl;
+			m_lpLog->TRACE_ERR("COM Error: %s", e.ErrorMessage());
+		} else {
 			cout << "COM Error: " << e.Description() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
-		}
-		else
-		{
-			cout << "COM Error: " << e.ErrorMessage() << endl;
-			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.ErrorMessage());
 		}
 	}
 	cout << "GetTableName finished" << endl;
@@ -239,15 +236,12 @@ void CModel::GetColumns(string strTableName, vector<FIELD> *lpvColumns)
 	}
 	catch (_com_error e)
 	{
-		if (GetOSVer() > 2)
-		{
+		if (e.Description() == _bstr_t("")) {
+			cout << "COM Error: " << e.ErrorMessage() << endl;
+			m_lpLog->TRACE_ERR("COM Error: %s", e.ErrorMessage());
+		} else {
 			cout << "COM Error: " << e.Description() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
-		}
-		else
-		{
-			cout << "COM Error: " << e.ErrorMessage() << endl;
-			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.ErrorMessage());
 		}
 	}
 }
