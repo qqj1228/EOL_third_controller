@@ -263,7 +263,7 @@ void CModel::InitMapDBTable()
 
 	vector<string>::iterator iter;
 	vector<string>::iterator end = vTableName.end();
-	for (iter = vTableName.begin(); iter != end; iter++)
+	for (iter = vTableName.begin(); iter != end; ++iter)
 	{
 		vector<FIELD> vColumns;
 		GetColumns(*iter, &vColumns);
