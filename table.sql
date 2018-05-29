@@ -8,8 +8,14 @@ CREATE TABLE JAC.dbo.VehicleInfo
 (
 	ID int IDENTITY PRIMARY KEY NOT NULL, -- ID, 自增, 主键
     VIN varchar(17) NOT NULL UNIQUE, -- VIN码
-	VehicleType varchar(22) NOT NULL, -- 车型代码
-);
+	VehicleType varchar(30) NOT NULL, -- 车型代码
+)
+GO
+
+-- 插入字段备注
+EXEC sp_addextendedproperty N'MS_Description', N'ID', N'USER', N'dbo', N'TABLE', N'VehicleInfo', N'COLUMN', N'ID'
+EXEC sp_addextendedproperty N'MS_Description', N'VIN码', N'USER', N'dbo', N'TABLE', N'VehicleInfo', N'COLUMN', N'VIN'
+EXEC sp_addextendedproperty N'MS_Description', N'车型代码', N'USER', N'dbo', N'TABLE', N'VehicleInfo', N'COLUMN', N'VehicleType'
 GO
 
 -- 测试: 插入数据
@@ -33,7 +39,7 @@ GO
 CREATE TABLE JAC.dbo.NCAConfig
 (
 	ID int IDENTITY PRIMARY KEY NOT NULL, -- ID, 自增, 主键
-    VehicleType varchar(22) NOT NULL UNIQUE, -- 车型代码
+    VehicleType varchar(30) NOT NULL UNIQUE, -- 车型代码
 	VehicleID int NULL, -- 车型序号
 	WheelBaseValue int NULL, -- 轴距
 	TyreRadius int NULL, -- 轮胎半径
@@ -88,7 +94,65 @@ CREATE TABLE JAC.dbo.NCAConfig
 	FR_TA_Inner_Max float NULL, -- 前右轮Inner转角最大值/前右轮转角右转最大值
 	FR_TA_Outer_Min float NULL, -- 前右轮Outer转角最小值/前右轮转角左转最小值
 	FR_TA_Outer_Max float NULL, -- 前右轮Outer转角最大值/前右轮转角左转最大值
-);
+)
+GO
+
+EXEC sp_addextendedproperty N'MS_Description', 'ID', N'user', N'dbo', N'table', N'NCAConfig', N'column', N'ID'
+EXEC sp_addextendedproperty N'MS_Description', '车型代码', N'user', N'dbo', N'table', N'NCAConfig', N'column', N'VehicleType'
+EXEC sp_addextendedproperty N'MS_Description', '车型序号', N'user', N'dbo', N'table', N'NCAConfig', N'column', N'VehicleID'
+EXEC sp_addextendedproperty N'MS_Description', '轴距', N'user', N'dbo', N'table', N'NCAConfig', N'column', N'WheelBaseValue'
+EXEC sp_addextendedproperty N'MS_Description', '轮胎半径', N'user', N'dbo', N'table', N'NCAConfig', N'column', N'TyreRadius'
+EXEC sp_addextendedproperty N'MS_Description', '转毂半径', N'user', N'dbo', N'table', N'NCAConfig', N'column', N'HubRadius'
+EXEC sp_addextendedproperty N'MS_Description', '转动周期', N'user', N'dbo', N'table', N'NCAConfig', N'column', N'RotatePeriodTime'
+EXEC sp_addextendedproperty N'MS_Description', '传动比', N'user', N'dbo', N'table', N'NCAConfig', N'column', N'DriveRatio'
+EXEC sp_addextendedproperty N'MS_Description', '是否调整后轴', N'user', N'dbo', N'table', N'NCAConfig', N'column', N'RearAxleEnable'
+EXEC sp_addextendedproperty N'MS_Description', '是否检测主销后倾', N'user', N'dbo', N'table', N'NCAConfig', N'column', N'CasterEnable'
+EXEC sp_addextendedproperty N'MS_Description', '是否检测转角', N'user', N'dbo', N'table', N'NCAConfig', N'column', N'TAEnable'
+
+EXEC sp_addextendedproperty N'MS_Description', '前轴前束和中值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FT_Toe_Mid'
+EXEC sp_addextendedproperty N'MS_Description', '前轴前束和偏差', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FT_Toe_Dev'
+EXEC sp_addextendedproperty N'MS_Description', '前左轮前束中值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FL_Toe_Mid'
+EXEC sp_addextendedproperty N'MS_Description', '前左轮前束偏差', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FL_Toe_Dev'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮前束中值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FR_Toe_Mid'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮前束偏差', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FR_Toe_Dev'
+EXEC sp_addextendedproperty N'MS_Description', '前轴外倾差中值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FC_Camber_Mid'
+EXEC sp_addextendedproperty N'MS_Description', '前轴外倾差偏差', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FC_Camber_Dev'
+EXEC sp_addextendedproperty N'MS_Description', '前左轮外倾中值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FL_Camber_Mid '
+EXEC sp_addextendedproperty N'MS_Description', '前左轮外倾偏差', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FL_Camber_Dev'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮外倾中值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FR_Camber_Mid'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮外倾偏差', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FR_Camber_Dev'
+EXEC sp_addextendedproperty N'MS_Description', '后轴前束和中值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'RT_Toe_Mid'
+EXEC sp_addextendedproperty N'MS_Description', '后轴前束和偏差', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'RT_Toe_Dev'
+EXEC sp_addextendedproperty N'MS_Description', '后左轮前束中值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'RL_Toe_Mid'
+EXEC sp_addextendedproperty N'MS_Description', '后左轮前束偏差', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'RL_Toe_Dev'
+EXEC sp_addextendedproperty N'MS_Description', '后右轮前束中值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'RR_Toe_Mid'
+EXEC sp_addextendedproperty N'MS_Description', '后右轮前束偏差', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'RR_Toe_Dev'
+EXEC sp_addextendedproperty N'MS_Description', '后轴外倾差中值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'RC_Camber_Mid' 
+EXEC sp_addextendedproperty N'MS_Description', '后轴外倾差偏差', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'RC_Camber_Dev'
+EXEC sp_addextendedproperty N'MS_Description', '后左轮外倾中值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'RL_Camber_Mid'
+EXEC sp_addextendedproperty N'MS_Description', '后左轮外倾偏差', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'RL_Camber_Dev'
+EXEC sp_addextendedproperty N'MS_Description', '后右轮外倾中值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'RR_Camber_Mid'
+EXEC sp_addextendedproperty N'MS_Description', '后右轮外倾偏差', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'RR_Camber_Dev'
+EXEC sp_addextendedproperty N'MS_Description', '推进角最小值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'Thrust_Ang_Min'
+EXEC sp_addextendedproperty N'MS_Description', '推进角最大值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'Thrust_Ang_Max'
+EXEC sp_addextendedproperty N'MS_Description', '对称角最小值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'Symmetry_Min'
+EXEC sp_addextendedproperty N'MS_Description', '对称角最大值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'Symmetry_Max'
+EXEC sp_addextendedproperty N'MS_Description', '方向盘摆正器角度最小值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'SWL_Angle_Min'
+EXEC sp_addextendedproperty N'MS_Description', '方向盘摆正器角度最大值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'SWL_Angle_Max'
+EXEC sp_addextendedproperty N'MS_Description', '前左轮主销后倾最小值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FL_Caster_Min'
+EXEC sp_addextendedproperty N'MS_Description', '前左轮主销后倾最大值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FL_Caster_Max'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮主销后倾最小值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FR_Caster_Min'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮主销后倾最大值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FR_Caster_Max'
+EXEC sp_addextendedproperty N'MS_Description', '主销后倾差最小值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FC_Caster_Min'
+EXEC sp_addextendedproperty N'MS_Description', '主销后倾差最大值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FC_Caster_Max'
+EXEC sp_addextendedproperty N'MS_Description', '前左轮Inner转角最小值/前左轮转角左转最小值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FL_TA_Inner_Min'
+EXEC sp_addextendedproperty N'MS_Description', '前左轮Inner转角最大值/前左轮转角左转最大值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FL_TA_Inner_Max'
+EXEC sp_addextendedproperty N'MS_Description', '前左轮Outer转角最小值/前左轮转角右转最小值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FL_TA_Outer_Min'
+EXEC sp_addextendedproperty N'MS_Description', '前左轮Outer转角最大值/前左轮转角右转最大值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FL_TA_Outer_Max'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮Inner转角最小值/前右轮转角右转最小值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FR_TA_Inner_Min'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮Inner转角最大值/前右轮转角右转最大值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FR_TA_Inner_Max'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮Outer转角最小值/前右轮转角左转最小值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FR_TA_Outer_Min'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮Outer转角最大值/前右轮转角左转最大值', N'user', N'dbo', N'table', N'NCAConfig', N'column', 'FR_TA_Outer_Max'
 GO
 
 -- 测试: 插入数据
@@ -163,7 +227,7 @@ GO
 CREATE TABLE JAC.dbo.HLAConfig
 (
 	ID int IDENTITY PRIMARY KEY NOT NULL, -- ID, 自增, 主键
-	VehicleType varchar(22) NOT NULL UNIQUE, -- 车型代码
+	VehicleType varchar(30) NOT NULL UNIQUE, -- 车型代码
 	VehicleID int NULL, -- 车型序号
 	LowBeamAdjustEnable int NULL, -- 是否调整近光灯位置
 	HighBeamAdjustEnable int NULL, -- 是否调整远光灯位置
@@ -195,7 +259,43 @@ CREATE TABLE JAC.dbo.HLAConfig
 	FogHor_Dev float NULL, -- 合格范围 - 雾灯水平偏移偏差
 	FogVer_Mid float NULL, -- 合格范围 - 雾灯垂直偏移中值
 	FogVer_Dev float NULL, -- 合格范围 - 雾灯垂直偏移偏差
-);
+)
+GO
+
+-- 插入字段备注
+EXEC sp_addextendedproperty N'MS_Description', 'ID', N'user', N'dbo', N'table', N'HLAConfig', N'column', N'ID'
+EXEC sp_addextendedproperty N'MS_Description', '车型代码', N'user', N'dbo', N'table', N'HLAConfig', N'column', N'VehicleType'
+EXEC sp_addextendedproperty N'MS_Description', '车型序号', N'user', N'dbo', N'table', N'HLAConfig', N'column', N'VehicleID'
+EXEC sp_addextendedproperty N'MS_Description', '是否调整近光灯位置', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'LowBeamAdjustEnable'
+EXEC sp_addextendedproperty N'MS_Description', '是否调整远光灯位置', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'HighBeamAdjustEnable'
+EXEC sp_addextendedproperty N'MS_Description', '是否调整雾灯位置', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'FogBeamAdjustEnable'
+EXEC sp_addextendedproperty N'MS_Description', '是否检测雾灯', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'FogBeamTestEnable'
+EXEC sp_addextendedproperty N'MS_Description', '是否自动切换远近光', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'AutoLBtoHBEnable'
+EXEC sp_addextendedproperty N'MS_Description', '近光灯高度', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'LowHeight'
+EXEC sp_addextendedproperty N'MS_Description', '近光灯间距', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'LowDistance'
+EXEC sp_addextendedproperty N'MS_Description', '远光灯高度', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'HighHeight'
+EXEC sp_addextendedproperty N'MS_Description', '远光灯间距', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'HighDistance'
+EXEC sp_addextendedproperty N'MS_Description', '雾灯高度', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'FogHeight'
+EXEC sp_addextendedproperty N'MS_Description', '雾灯间距', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'FogDistance'
+
+EXEC sp_addextendedproperty N'MS_Description', '近光光强最小值', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'LowInten_Min'
+EXEC sp_addextendedproperty N'MS_Description', '近光光强最大值', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'LowInten_Max'
+EXEC sp_addextendedproperty N'MS_Description', '近光水平偏移中值', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'LowHor_Mid'
+EXEC sp_addextendedproperty N'MS_Description', '近光水平偏移偏差', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'LowHor_Dev'
+EXEC sp_addextendedproperty N'MS_Description', '近光垂直偏移中值', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'LowVer_Mid'
+EXEC sp_addextendedproperty N'MS_Description', '近光垂直偏移偏差', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'LowVer_Dev'
+EXEC sp_addextendedproperty N'MS_Description', '远光光强最小值', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'HighInten_Min'
+EXEC sp_addextendedproperty N'MS_Description', '远光光强最大值', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'HighInten_Max'
+EXEC sp_addextendedproperty N'MS_Description', '远光水平偏移中值', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'HighHor_Mid'
+EXEC sp_addextendedproperty N'MS_Description', '远光水平偏移偏差', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'HighHor_Dev'
+EXEC sp_addextendedproperty N'MS_Description', '远光垂直偏移中值', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'HighVer_Mid'
+EXEC sp_addextendedproperty N'MS_Description', '远光垂直偏移偏差', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'HighVer_Dev'
+EXEC sp_addextendedproperty N'MS_Description', '雾灯光强最小值', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'FogInten_Min'
+EXEC sp_addextendedproperty N'MS_Description', '雾灯光强最大值', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'FogInten_Max'
+EXEC sp_addextendedproperty N'MS_Description', '雾灯水平偏移中值', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'FogHor_Mid'
+EXEC sp_addextendedproperty N'MS_Description', '雾灯水平偏移偏差', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'FogHor_Dev'
+EXEC sp_addextendedproperty N'MS_Description', '雾灯垂直偏移中值', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'FogVer_Mid'
+EXEC sp_addextendedproperty N'MS_Description', '雾灯垂直偏移偏差', N'user', N'dbo', N'table', N'HLAConfig', N'column', 'FogVer_Dev'
 GO
 
 -- 测试: 插入数据
@@ -247,8 +347,13 @@ GO
 CREATE TABLE JAC.dbo.SideSlipConfig
 (
 	ID int IDENTITY PRIMARY KEY NOT NULL, -- ID, 自增, 主键
-	VehicleType varchar(22) NOT NULL UNIQUE, -- 车型代码
-);
+	VehicleType varchar(30) NOT NULL UNIQUE, -- 车型代码
+)
+GO
+
+-- 插入字段备注
+EXEC sp_addextendedproperty N'MS_Description', 'ID', N'user', N'dbo', N'table', N'SideSlipConfig', N'column', N'ID'
+EXEC sp_addextendedproperty N'MS_Description', '车型代码', N'user', N'dbo', N'table', N'SideSlipConfig', N'column', N'VehicleType'
 GO
 
 -- 测试: 插入数据
@@ -267,9 +372,15 @@ GO
 CREATE TABLE JAC.dbo.BrakeConfig
 (
 	ID int IDENTITY PRIMARY KEY NOT NULL, -- ID, 自增, 主键
-	VehicleType varchar(22) NOT NULL UNIQUE, -- 车型代码
+	VehicleType varchar(30) NOT NULL UNIQUE, -- 车型代码
 	WheelBaseValue int NULL, -- 轴距
-);
+)
+GO
+
+-- 插入字段备注
+EXEC sp_addextendedproperty N'MS_Description', 'ID', N'user', N'dbo', N'table', N'BrakeConfig', N'column', N'ID'
+EXEC sp_addextendedproperty N'MS_Description', '车型代码', N'user', N'dbo', N'table', N'BrakeConfig', N'column', N'VehicleType'
+EXEC sp_addextendedproperty N'MS_Description', '轴距', N'user', N'dbo', N'table', N'BrakeConfig', N'column', N'WheelBaseValue'
 GO
 
 -- 测试: 插入数据
@@ -292,10 +403,10 @@ GO
 CREATE TABLE JAC.dbo.NCAToeCamberResult
 (
 	ID int IDENTITY PRIMARY KEY NOT NULL, -- ID, 自增, 主键
-	VIN varchar(17) NOT NULL UNIQUE, -- VIN码
+	VIN varchar(17) NOT NULL, -- VIN码
 	InspectDate DATE NULL, -- 检测日期
 	InspectTime TIME NULL, -- 检测时间
-	VehicleType varchar(22) NOT NULL, -- 车型代码
+	VehicleType varchar(30) NOT NULL, -- 车型代码
 	CycleTime int NULL, -- 循环时间
 	Result char(1) NULL, -- 总评, O是合格, X是不合格
 
@@ -308,13 +419,13 @@ CREATE TABLE JAC.dbo.NCAToeCamberResult
 	FC_Camber float NULL, -- 前轴外倾差数值
 	FC_Camber_Result char(1) NULL, -- 前轴外倾差评判
 	FL_Camber float NULL, -- 前左轮外倾数值
-	FL_Camber_Result char(1) NULL, -- 前左轮外倾评判 
+	FL_Camber_Result char(1) NULL, -- 前左轮外倾评判
 	FR_Camber float NULL, -- 前右轮外倾数值
 	FR_Camber_Result char(1) NULL, -- 前右轮外倾评判
 	RT_Toe float NULL, -- 后轴前束和数值
 	RT_Toe_Result char(1) NULL, -- 后轴前束和评判
 	RL_Toe float NULL, -- 后左轮前束数值
-	RL_Toe_Result char(1) NULL, -- 后左轮前束评判 
+	RL_Toe_Result char(1) NULL, -- 后左轮前束评判
 	RR_Toe float NULL, -- 后右轮前束数值
 	RR_Toe_Result char(1) NULL, -- 后右轮前束评判
 	RC_Camber float NULL, -- 后轴外倾差数值
@@ -329,7 +440,48 @@ CREATE TABLE JAC.dbo.NCAToeCamberResult
 	Symmetry_Result char(1) NULL, -- 对称角评判
 	SWL_Angle float NULL, -- 方向盘摆正器角度数值
 	SWL_Angle_Result char(1) NULL, -- 方向盘摆正器角度评判
-);
+)
+GO
+
+-- 插入字段备注
+EXEC sp_addextendedproperty N'MS_Description', 'ID', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', N'ID'
+EXEC sp_addextendedproperty N'MS_Description', 'VIN码', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', N'VIN'
+EXEC sp_addextendedproperty N'MS_Description', '检测日期', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', N'InspectDate'
+EXEC sp_addextendedproperty N'MS_Description', '检测时间', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', N'InspectTime'
+EXEC sp_addextendedproperty N'MS_Description', '车型代码', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', N'VehicleType'
+EXEC sp_addextendedproperty N'MS_Description', '循环时间', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', N'CycleTime'
+EXEC sp_addextendedproperty N'MS_Description', '总评', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', N'Result'
+
+EXEC sp_addextendedproperty N'MS_Description', '前轴前束和数值', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'FT_Toe'
+EXEC sp_addextendedproperty N'MS_Description', '前轴前束和评判', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'FT_Toe_Result'
+EXEC sp_addextendedproperty N'MS_Description', '前左轮前束数值', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'FL_Toe'
+EXEC sp_addextendedproperty N'MS_Description', '前左轮前束评判', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'FL_Toe_Result'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮前束数值', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'FR_Toe'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮前束评判', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'FR_Toe_Result'
+EXEC sp_addextendedproperty N'MS_Description', '前轴外倾差数值', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'FC_Camber'
+EXEC sp_addextendedproperty N'MS_Description', '前轴外倾差评判', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'FC_Camber_Result'
+EXEC sp_addextendedproperty N'MS_Description', '前左轮外倾数值', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'FL_Camber'
+EXEC sp_addextendedproperty N'MS_Description', '前左轮外倾评判', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'FL_Camber_Result'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮外倾数值', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'FR_Camber'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮外倾评判', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'FR_Camber_Result'
+EXEC sp_addextendedproperty N'MS_Description', '后轴前束和数值', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'RT_Toe'
+EXEC sp_addextendedproperty N'MS_Description', '后轴前束和评判', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'RT_Toe_Result'
+EXEC sp_addextendedproperty N'MS_Description', '后左轮前束数值', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'RL_Toe'
+EXEC sp_addextendedproperty N'MS_Description', '后左轮前束评判', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'RL_Toe_Result'
+EXEC sp_addextendedproperty N'MS_Description', '后右轮前束数值', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'RR_Toe'
+EXEC sp_addextendedproperty N'MS_Description', '后右轮前束评判', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'RR_Toe_Result'
+EXEC sp_addextendedproperty N'MS_Description', '后轴外倾差数值', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'RC_Camber'
+EXEC sp_addextendedproperty N'MS_Description', '后轴外倾差评判', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'RC_Camber_Result'
+EXEC sp_addextendedproperty N'MS_Description', '后左轮外倾数值', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'RL_Camber'
+EXEC sp_addextendedproperty N'MS_Description', '后左轮外倾评判', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'RL_Camber_Result'
+EXEC sp_addextendedproperty N'MS_Description', '后右轮外倾数值', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'RR_Camber'
+EXEC sp_addextendedproperty N'MS_Description', '后右轮外倾评判', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'RR_Camber_Result'
+EXEC sp_addextendedproperty N'MS_Description', '推进角数值', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'Thrust_Ang'
+EXEC sp_addextendedproperty N'MS_Description', '推进角评判', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'Thrust_Ang_Result'
+EXEC sp_addextendedproperty N'MS_Description', '对称角数值', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'Symmetry'
+EXEC sp_addextendedproperty N'MS_Description', '对称角评判', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'Symmetry_Result'
+EXEC sp_addextendedproperty N'MS_Description', '方向盘摆正器角度数值', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'SWL_Angle'
+EXEC sp_addextendedproperty N'MS_Description', '方向盘摆正器角度评判', N'user', N'dbo', N'table', N'NCAToeCamberResult', N'column', 'SWL_Angle_Result'
 GO
 
 -- 测试: 插入数据
@@ -385,10 +537,10 @@ GO
 CREATE TABLE JAC.dbo.NCACasterResult
 (
 	ID int IDENTITY PRIMARY KEY NOT NULL, -- ID, 自增, 主键
-	VIN varchar(17) NOT NULL UNIQUE, -- VIN码
+	VIN varchar(17) NOT NULL, -- VIN码
 	InspectDate DATE NULL, -- 检测日期
 	InspectTime TIME NULL, -- 检测时间
-	VehicleType varchar(22) NOT NULL, -- 车型代码
+	VehicleType varchar(30) NOT NULL, -- 车型代码
 	CycleTime int NULL, -- 循环时间
 	Caster_Result char(1) NULL, -- 主销后倾总评, O是合格, X是不合格
 
@@ -398,7 +550,24 @@ CREATE TABLE JAC.dbo.NCACasterResult
 	FR_Caster_Result char(1) NULL, -- 前右轮主销后倾评判
 	FC_Caster float NULL, -- 主销后倾差数值
 	FC_Caster_Result char(1) NULL, -- 主销后倾差评判
-);
+)
+GO
+
+-- 插入字段备注
+EXEC sp_addextendedproperty N'MS_Description', 'ID', N'user', N'dbo', N'table', N'NCACasterResult', N'column', N'ID'
+EXEC sp_addextendedproperty N'MS_Description', 'VIN码', N'user', N'dbo', N'table', N'NCACasterResult', N'column', N'VIN'
+EXEC sp_addextendedproperty N'MS_Description', '检测日期', N'user', N'dbo', N'table', N'NCACasterResult', N'column', N'InspectDate'
+EXEC sp_addextendedproperty N'MS_Description', '检测时间', N'user', N'dbo', N'table', N'NCACasterResult', N'column', N'InspectTime'
+EXEC sp_addextendedproperty N'MS_Description', '车型代码', N'user', N'dbo', N'table', N'NCACasterResult', N'column', N'VehicleType'
+EXEC sp_addextendedproperty N'MS_Description', '循环时间', N'user', N'dbo', N'table', N'NCACasterResult', N'column', N'CycleTime'
+EXEC sp_addextendedproperty N'MS_Description', '主销后倾总评', N'user', N'dbo', N'table', N'NCACasterResult', N'column', N'Caster_Result'
+
+EXEC sp_addextendedproperty N'MS_Description', '前左轮主销后倾数值', N'user', N'dbo', N'table', N'NCACasterResult', N'column', N'FL_Caster'
+EXEC sp_addextendedproperty N'MS_Description', '前左轮主销后倾评判', N'user', N'dbo', N'table', N'NCACasterResult', N'column', N'FL_Caster_Result'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮主销后倾数值', N'user', N'dbo', N'table', N'NCACasterResult', N'column', N'FR_Caster'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮主销后倾评判', N'user', N'dbo', N'table', N'NCACasterResult', N'column', N'FR_Caster_Result'
+EXEC sp_addextendedproperty N'MS_Description', '主销后倾差数值', N'user', N'dbo', N'table', N'NCACasterResult', N'column', N'FC_Caster'
+EXEC sp_addextendedproperty N'MS_Description', '主销后倾差评判', N'user', N'dbo', N'table', N'NCACasterResult', N'column', N'FC_Caster_Result'
 GO
 
 -- 测试: 插入数据
@@ -430,10 +599,10 @@ GO
 CREATE TABLE JAC.dbo.NCATurningAngleResult
 (
 	ID int IDENTITY PRIMARY KEY NOT NULL, -- ID, 自增, 主键
-	VIN varchar(17) NOT NULL UNIQUE, -- VIN码
+	VIN varchar(17) NOT NULL, -- VIN码
 	InspectDate DATE NULL, -- 检测日期
 	InspectTime TIME NULL, -- 检测时间
-	VehicleType varchar(22) NOT NULL, -- 车型代码
+	VehicleType varchar(30) NOT NULL, -- 车型代码
 	CycleTime int NULL, -- 循环时间
 	TA_Result char(1) NULL, -- 最大转角总评, O是合格, X是不合格
 
@@ -445,7 +614,26 @@ CREATE TABLE JAC.dbo.NCATurningAngleResult
 	FR_TA_Inner_Result char(1) NULL, -- 前右轮转角右转评判
 	FR_TA_Outer float NULL, -- 前右轮转角左转数值
 	FR_TA_Outer_Result char(1) NULL, -- 前右轮转角左转评判
-);
+)
+GO
+
+-- 插入字段备注
+EXEC sp_addextendedproperty N'MS_Description', 'ID', N'user', N'dbo', N'table', N'NCATurningAngleResult', N'column', N'ID'
+EXEC sp_addextendedproperty N'MS_Description', 'VIN码', N'user', N'dbo', N'table', N'NCATurningAngleResult', N'column', N'VIN'
+EXEC sp_addextendedproperty N'MS_Description', '检测日期', N'user', N'dbo', N'table', N'NCATurningAngleResult', N'column', N'InspectDate'
+EXEC sp_addextendedproperty N'MS_Description', '检测时间', N'user', N'dbo', N'table', N'NCATurningAngleResult', N'column', N'InspectTime'
+EXEC sp_addextendedproperty N'MS_Description', '车型代码', N'user', N'dbo', N'table', N'NCATurningAngleResult', N'column', N'VehicleType'
+EXEC sp_addextendedproperty N'MS_Description', '循环时间', N'user', N'dbo', N'table', N'NCATurningAngleResult', N'column', N'CycleTime'
+EXEC sp_addextendedproperty N'MS_Description', '最大转角总评', N'user', N'dbo', N'table', N'NCATurningAngleResult', N'column', N'TA_Result'
+
+EXEC sp_addextendedproperty N'MS_Description', '前左轮转角左转数值', N'user', N'dbo', N'table', N'NCATurningAngleResult', N'column', N'FL_TA_Inner'
+EXEC sp_addextendedproperty N'MS_Description', '前左轮转角左转评判', N'user', N'dbo', N'table', N'NCATurningAngleResult', N'column', N'FL_TA_Inner_Result'
+EXEC sp_addextendedproperty N'MS_Description', '前左轮转角右转数值', N'user', N'dbo', N'table', N'NCATurningAngleResult', N'column', N'FL_TA_Outer'
+EXEC sp_addextendedproperty N'MS_Description', '前左轮转角右转评判', N'user', N'dbo', N'table', N'NCATurningAngleResult', N'column', N'FL_TA_Outer_Result'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮转角右转数值', N'user', N'dbo', N'table', N'NCATurningAngleResult', N'column', N'FR_TA_Inner'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮转角右转评判', N'user', N'dbo', N'table', N'NCATurningAngleResult', N'column', N'FR_TA_Inner_Result'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮转角左转数值', N'user', N'dbo', N'table', N'NCATurningAngleResult', N'column', N'FR_TA_Outer'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮转角左转评判', N'user', N'dbo', N'table', N'NCATurningAngleResult', N'column', N'FR_TA_Outer_Result'
 GO
 
 -- 测试: 插入数据
@@ -479,7 +667,7 @@ GO
 CREATE TABLE JAC.dbo.HLAResult
 (
 	ID int IDENTITY PRIMARY KEY NOT NULL, -- ID, 自增, 主键
-	VIN varchar(17) NOT NULL UNIQUE, -- VIN码
+	VIN varchar(17) NOT NULL, -- VIN码
 	InspectDate DATE NULL, -- 检测日期
 	InspectTime TIME NULL, -- 检测时间
 	CycleTime int NULL, -- 循环时间
@@ -487,21 +675,21 @@ CREATE TABLE JAC.dbo.HLAResult
 
 	LLowInten float NULL, -- 左灯近光光强数值, O是合格, X是不合格
 	LLowInten_Result char(1) NULL, -- 左灯近光光强评判
-	LLowHor float NULL, -- 左灯近光水平偏移数值        
+	LLowHor float NULL, -- 左灯近光水平偏移数值
 	LLowHor_Result char(1) NULL, -- 左灯近光水平偏移评判
-	LLowVer float NULL, -- 左灯近光垂直偏移数值   
+	LLowVer float NULL, -- 左灯近光垂直偏移数值
 	LLowVer_Result char(1) NULL, -- 左灯近光垂直偏移评判
 	LHighInten float NULL, -- 左灯远光光强数值
 	LHighInten_Result char(1) NULL, -- 左灯远光光强评判
 	LHighHor float NULL, -- 左灯远光水平偏移数值
-	LHighHor_Result char(1) NULL, -- 左灯远光水平偏移评判     
+	LHighHor_Result char(1) NULL, -- 左灯远光水平偏移评判
 	LHighVer float NULL, -- 左灯远光垂直偏移数值
-	LHighVer_Result char(1) NULL, -- 左灯远光垂直偏移评判  
+	LHighVer_Result char(1) NULL, -- 左灯远光垂直偏移评判
 	RLowInten float NULL, -- 右灯近光光强数值
 	RLowInten_Result char(1) NULL, -- 右灯近光光强评判
 	RLowHor float NULL, -- 右灯近光水平偏移数值
-	RLowHor_Result char(1) NULL, -- ;右灯近光水平偏移评判   
-	RLowVer float NULL, -- 右灯近光垂直偏移数值           
+	RLowHor_Result char(1) NULL, -- 右灯近光水平偏移评判
+	RLowVer float NULL, -- 右灯近光垂直偏移数值
 	RLowVer_Result char(1) NULL, -- 右灯近光垂直偏移评判
 	RHighInten float NULL, -- 右灯远光光强数值
 	RHighInten_Result char(1) NULL, -- 右灯远光光强评判
@@ -509,7 +697,41 @@ CREATE TABLE JAC.dbo.HLAResult
 	RHighHor_Result char(1) NULL, -- 右灯远光水平偏移评判
 	RHighVer float NULL, -- 右灯远光垂直偏移数值
 	RHighVer_Result char(1) NULL, -- 右灯远光垂直偏移评判
-);
+)
+GO
+
+-- 插入字段备注
+EXEC sp_addextendedproperty N'MS_Description', 'ID', N'user', N'dbo', N'table', N'HLAResult', N'column', N'ID'
+EXEC sp_addextendedproperty N'MS_Description', 'VIN码', N'user', N'dbo', N'table', N'HLAResult', N'column', N'VIN'
+EXEC sp_addextendedproperty N'MS_Description', '检测日期', N'user', N'dbo', N'table', N'HLAResult', N'column', N'InspectDate'
+EXEC sp_addextendedproperty N'MS_Description', '检测时间', N'user', N'dbo', N'table', N'HLAResult', N'column', N'InspectTime'
+EXEC sp_addextendedproperty N'MS_Description', '循环时间', N'user', N'dbo', N'table', N'HLAResult', N'column', N'CycleTime'
+EXEC sp_addextendedproperty N'MS_Description', '灯光总评', N'user', N'dbo', N'table', N'HLAResult', N'column', N'TotalResult'
+
+EXEC sp_addextendedproperty N'MS_Description', '左灯近光光强数值', N'user', N'dbo', N'table', N'HLAResult', N'column', 'LLowInten'
+EXEC sp_addextendedproperty N'MS_Description', '左灯近光光强评判', N'user', N'dbo', N'table', N'HLAResult', N'column', 'LLowInten_Result'
+EXEC sp_addextendedproperty N'MS_Description', '左灯近光水平偏移数值', N'user', N'dbo', N'table', N'HLAResult', N'column', 'LLowHor'
+EXEC sp_addextendedproperty N'MS_Description', '左灯近光水平偏移评判', N'user', N'dbo', N'table', N'HLAResult', N'column', 'LLowHor_Result'
+EXEC sp_addextendedproperty N'MS_Description', '左灯近光垂直偏移数值', N'user', N'dbo', N'table', N'HLAResult', N'column', 'LLowVer'
+EXEC sp_addextendedproperty N'MS_Description', '左灯近光垂直偏移评判', N'user', N'dbo', N'table', N'HLAResult', N'column', 'LLowVer_Result'
+EXEC sp_addextendedproperty N'MS_Description', '左灯远光光强数值', N'user', N'dbo', N'table', N'HLAResult', N'column', 'LHighInten'
+EXEC sp_addextendedproperty N'MS_Description', '左灯远光光强评判', N'user', N'dbo', N'table', N'HLAResult', N'column', 'LHighInten_Result'
+EXEC sp_addextendedproperty N'MS_Description', '左灯远光水平偏移数值', N'user', N'dbo', N'table', N'HLAResult', N'column', 'LHighHor'
+EXEC sp_addextendedproperty N'MS_Description', '左灯远光水平偏移评判', N'user', N'dbo', N'table', N'HLAResult', N'column', 'LHighHor_Result'
+EXEC sp_addextendedproperty N'MS_Description', '左灯远光垂直偏移数值', N'user', N'dbo', N'table', N'HLAResult', N'column', 'LHighVer'
+EXEC sp_addextendedproperty N'MS_Description', '左灯远光垂直偏移评判', N'user', N'dbo', N'table', N'HLAResult', N'column', 'LHighVer_Result'
+EXEC sp_addextendedproperty N'MS_Description', '右灯近光光强数值', N'user', N'dbo', N'table', N'HLAResult', N'column', 'RLowInten'
+EXEC sp_addextendedproperty N'MS_Description', '右灯近光光强评判', N'user', N'dbo', N'table', N'HLAResult', N'column', 'RLowInten_Result'
+EXEC sp_addextendedproperty N'MS_Description', '右灯近光水平偏移数值', N'user', N'dbo', N'table', N'HLAResult', N'column', 'RLowHor'
+EXEC sp_addextendedproperty N'MS_Description', '右灯近光水平偏移评判', N'user', N'dbo', N'table', N'HLAResult', N'column', 'RLowHor_Result'
+EXEC sp_addextendedproperty N'MS_Description', '右灯近光垂直偏移数值', N'user', N'dbo', N'table', N'HLAResult', N'column', 'RLowVer'
+EXEC sp_addextendedproperty N'MS_Description', '右灯近光垂直偏移评判', N'user', N'dbo', N'table', N'HLAResult', N'column', 'RLowVer_Result'
+EXEC sp_addextendedproperty N'MS_Description', '右灯远光光强数值', N'user', N'dbo', N'table', N'HLAResult', N'column', 'RHighInten'
+EXEC sp_addextendedproperty N'MS_Description', '右灯远光光强评判', N'user', N'dbo', N'table', N'HLAResult', N'column', 'RHighInten_Result'
+EXEC sp_addextendedproperty N'MS_Description', '右灯远光水平偏移数值', N'user', N'dbo', N'table', N'HLAResult', N'column', 'RHighHor'
+EXEC sp_addextendedproperty N'MS_Description', '右灯远光水平偏移评判', N'user', N'dbo', N'table', N'HLAResult', N'column', 'RHighHor_Result'
+EXEC sp_addextendedproperty N'MS_Description', '右灯远光垂直偏移数值', N'user', N'dbo', N'table', N'HLAResult', N'column', 'RHighVer'
+EXEC sp_addextendedproperty N'MS_Description', '右灯远光垂直偏移评判', N'user', N'dbo', N'table', N'HLAResult', N'column', 'RHighVer_Result'
 GO
 
 -- 测试: 插入数据
@@ -558,10 +780,10 @@ GO
 CREATE TABLE JAC.dbo.SideSlipResult
 (
 	ID int IDENTITY PRIMARY KEY NOT NULL, -- ID, 自增, 主键
-	VIN varchar(17) NOT NULL UNIQUE, -- VIN码
+	VIN varchar(17) NOT NULL, -- VIN码
 	InspectDate DATE NULL, -- 检测日期
 	InspectTime TIME NULL, -- 检测时间
-	VehicleType varchar(22) NOT NULL, -- 车型代码
+	VehicleType varchar(30) NOT NULL, -- 车型代码
 	CycleTime int NULL, -- 循环时间
 	SlipResult char(1) NULL, -- 侧滑总评, O是合格, X是不合格
 
@@ -569,7 +791,22 @@ CREATE TABLE JAC.dbo.SideSlipResult
 	FrontSlipResult char(1) NULL, -- 前轴侧滑评判
 	PassSpeed float NULL, -- 通过速度数值
 	PassSpeedResult char(1) NULL, -- 通过速度评判
-);
+)
+GO
+
+-- 插入字段备注
+EXEC sp_addextendedproperty N'MS_Description', 'ID', N'user', N'dbo', N'table', N'SideSlipResult', N'column', N'ID'
+EXEC sp_addextendedproperty N'MS_Description', 'VIN码', N'user', N'dbo', N'table', N'SideSlipResult', N'column', N'VIN'
+EXEC sp_addextendedproperty N'MS_Description', '检测日期', N'user', N'dbo', N'table', N'SideSlipResult', N'column', N'InspectDate'
+EXEC sp_addextendedproperty N'MS_Description', '检测时间', N'user', N'dbo', N'table', N'SideSlipResult', N'column', N'InspectTime'
+EXEC sp_addextendedproperty N'MS_Description', '车型代码', N'user', N'dbo', N'table', N'SideSlipResult', N'column', N'VehicleType'
+EXEC sp_addextendedproperty N'MS_Description', '循环时间', N'user', N'dbo', N'table', N'SideSlipResult', N'column', N'CycleTime'
+EXEC sp_addextendedproperty N'MS_Description', '侧滑总评', N'user', N'dbo', N'table', N'SideSlipResult', N'column', N'SlipResult'
+
+EXEC sp_addextendedproperty N'MS_Description', '前轴侧滑数值', N'user', N'dbo', N'table', N'SideSlipResult', N'column', N'FrontSlipValue'
+EXEC sp_addextendedproperty N'MS_Description', '前轴侧滑评判', N'user', N'dbo', N'table', N'SideSlipResult', N'column', N'FrontSlipResult'
+EXEC sp_addextendedproperty N'MS_Description', '通过速度数值', N'user', N'dbo', N'table', N'SideSlipResult', N'column', N'PassSpeed'
+EXEC sp_addextendedproperty N'MS_Description', '通过速度评判', N'user', N'dbo', N'table', N'SideSlipResult', N'column', N'PassSpeedResult'
 GO
 
 -- 测试: 插入数据
@@ -599,10 +836,10 @@ GO
 CREATE TABLE JAC.dbo.BrakeResult
 (
 	ID int IDENTITY PRIMARY KEY NOT NULL, -- ID, 自增, 主键
-	VIN varchar(17) NOT NULL UNIQUE, -- VIN码
+	VIN varchar(17) NOT NULL, -- VIN码
 	InspectDate DATE NULL, -- 检测日期
 	InspectTime TIME NULL, -- 检测时间
-	VehicleType varchar(22) NOT NULL, -- 车型代码
+	VehicleType varchar(30) NOT NULL, -- 车型代码
 	CycleTime int NULL, -- 循环时间
 	TotalResult char(1) NULL, -- 制动总评, O是合格, X是不合格
 
@@ -654,7 +891,66 @@ CREATE TABLE JAC.dbo.BrakeResult
 	FrontRTResult char(1) NULL, -- 前轴制动协调时间评判
 	RearResponseTime float NULL, -- 后轴制动协调时间数值
 	RearRTResult char(1) NULL, -- 后轴制动协调时间评判
-);
+)
+GO
+
+-- 插入字段备注
+EXEC sp_addextendedproperty N'MS_Description', 'ID', N'user', N'dbo', N'table', N'BrakeResult', N'column', N'ID'
+EXEC sp_addextendedproperty N'MS_Description', 'VIN码', N'user', N'dbo', N'table', N'BrakeResult', N'column', N'VIN'
+EXEC sp_addextendedproperty N'MS_Description', '检测日期', N'user', N'dbo', N'table', N'BrakeResult', N'column', N'InspectDate'
+EXEC sp_addextendedproperty N'MS_Description', '检测时间', N'user', N'dbo', N'table', N'BrakeResult', N'column', N'InspectTime'
+EXEC sp_addextendedproperty N'MS_Description', '车型代码', N'user', N'dbo', N'table', N'BrakeResult', N'column', N'VehicleType'
+EXEC sp_addextendedproperty N'MS_Description', '循环时间', N'user', N'dbo', N'table', N'BrakeResult', N'column', N'CycleTime'
+EXEC sp_addextendedproperty N'MS_Description', '制动总评', N'user', N'dbo', N'table', N'BrakeResult', N'column', N'TotalResult'
+
+EXEC sp_addextendedproperty N'MS_Description', '前左轮轮重数据', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'FLWeightValue'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮轮重数据', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'FRWeightValue'
+EXEC sp_addextendedproperty N'MS_Description', '后左轮轮重数据', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'RLWeightValue'
+EXEC sp_addextendedproperty N'MS_Description', '后右轮轮重数据', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'RRWeightValue'
+EXEC sp_addextendedproperty N'MS_Description', '前轴最大制动和时左轮的制动力', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'FLBrakeMaxSumForce'
+EXEC sp_addextendedproperty N'MS_Description', '前轴最大制动和时右轮的制动力', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'FRBraketMaxSumForce'
+EXEC sp_addextendedproperty N'MS_Description', '前轴最大制动差时左轮的制动力', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'FLBrakeMaxDiffForce'
+EXEC sp_addextendedproperty N'MS_Description', '前轴最大制动差时右轮的制动力', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'FRBrakeMaxDiffForce'
+EXEC sp_addextendedproperty N'MS_Description', '前轴制动过程中的最大制动力', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'FrontBrakeMaxForce'
+EXEC sp_addextendedproperty N'MS_Description', '前左轮最大阻滞力数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'FLMaxDragForce'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮最大阻滞力数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'FRMaxDragForce'
+EXEC sp_addextendedproperty N'MS_Description', '前轴最大制动和数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'FrontMaxSumValue'
+EXEC sp_addextendedproperty N'MS_Description', '前轴最大制动差数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'FrontMaxDiffValue'
+EXEC sp_addextendedproperty N'MS_Description', '前左轮阻滞率数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'FLDragValue'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮阻滞率数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'FRDragValue'
+EXEC sp_addextendedproperty N'MS_Description', '前轴最大制动和评判', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'FrontMaxSumResult'
+EXEC sp_addextendedproperty N'MS_Description', '前轴最大制动差评判', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'FrontMaxDiffResult'
+EXEC sp_addextendedproperty N'MS_Description', '前左轮阻滞率评判', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'FLDragResult'
+EXEC sp_addextendedproperty N'MS_Description', '前右轮阻滞率评判', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'FRDragResult'
+EXEC sp_addextendedproperty N'MS_Description', '后轴最大制动和时左轮的制动力数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'RLBrakeMaxSumForce'
+EXEC sp_addextendedproperty N'MS_Description', '后轴最大制动和时右轮的制动力数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'RRBrakeMaxSumForce'
+EXEC sp_addextendedproperty N'MS_Description', '后轴最大制动差时左轮的制动力数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'RLBrakeMaxDiffForce'
+EXEC sp_addextendedproperty N'MS_Description', '后轴最大制动差时右轮的制动力数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'RRBrakeMaxDiffForce'
+EXEC sp_addextendedproperty N'MS_Description', '后轴制动过程中的最大制动力', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'RearBrakeMaxForce'
+EXEC sp_addextendedproperty N'MS_Description', '后左轮最大阻滞力数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'RLMaxDragForce'
+EXEC sp_addextendedproperty N'MS_Description', '后右轮最大阻滞力数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'RRMaxDragForce'
+EXEC sp_addextendedproperty N'MS_Description', '后轴最大制动和数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'RearMaxSumValue'
+EXEC sp_addextendedproperty N'MS_Description', '后轴最大制动差数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'RearMaxDiffValue'
+EXEC sp_addextendedproperty N'MS_Description', '后左轮阻滞率数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'RLMaxDragValue'
+EXEC sp_addextendedproperty N'MS_Description', '后右轮阻滞率数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'RRMaxDragValue'
+EXEC sp_addextendedproperty N'MS_Description', '后轴制动和评判', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'RearMaxSumResult'
+EXEC sp_addextendedproperty N'MS_Description', '后轴制动差评判', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'RearMaxDiffResult'
+EXEC sp_addextendedproperty N'MS_Description', '后左轮阻滞率评判', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'RLMaxDragResult'
+EXEC sp_addextendedproperty N'MS_Description', '后右轮阻滞率评判', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'RRMaxDragResult'
+EXEC sp_addextendedproperty N'MS_Description', '最大驻车和时的左轮制动力数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'LeftParkMaxSumForce'
+EXEC sp_addextendedproperty N'MS_Description', '最大驻车和时的右轮制动力数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'RightParkMaxSumForce'
+EXEC sp_addextendedproperty N'MS_Description', '驻车制动和数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'ParkMaxSumValue'
+EXEC sp_addextendedproperty N'MS_Description', '驻车制动和评判', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'ParkMaxSumResult'
+EXEC sp_addextendedproperty N'MS_Description', '整车制动和数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'TotalSumValue'
+EXEC sp_addextendedproperty N'MS_Description', '整车制动和评判', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'TotalSumResult'
+EXEC sp_addextendedproperty N'MS_Description', '踏板力数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'PedalValue'
+EXEC sp_addextendedproperty N'MS_Description', '踏板力评判', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'PedalResult'
+EXEC sp_addextendedproperty N'MS_Description', '手拉力数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'DragParkValue'
+EXEC sp_addextendedproperty N'MS_Description', '手拉力评判', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'DragParkResult'
+EXEC sp_addextendedproperty N'MS_Description', '前轴制动协调时间数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'FrontResponseTime'
+EXEC sp_addextendedproperty N'MS_Description', '前轴制动协调时间评判', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'FrontRTResult'
+EXEC sp_addextendedproperty N'MS_Description', '后轴制动协调时间数值', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'RearResponseTime'
+EXEC sp_addextendedproperty N'MS_Description', '后轴制动协调时间评判', N'user', N'dbo', N'table', N'BrakeResult', N'column', 'RearRTResult'
 GO
 
 -- 测试: 插入数据
