@@ -161,6 +161,7 @@
     <ClInclude Include="CModel.h" />
     <ClInclude Include="CnComm.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="Socket.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="util.h" />
@@ -171,6 +172,7 @@
     <ClCompile Include="EOL_third_controller.cpp" />
     <ClCompile Include="CModel.cpp" />
     <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="Socket.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

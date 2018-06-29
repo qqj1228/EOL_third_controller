@@ -39,6 +39,9 @@
     <ClInclude Include="CnComm.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Socket.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -57,6 +60,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="EOL_third_controller.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Socket.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

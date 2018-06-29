@@ -30,6 +30,11 @@ struct SERIALPORT
 	BYTE btStopBits; // 停止位数
 };
 
+struct SOCKETCFG {
+	int iProtocol; // 协议类型，1：TCP，2：UDP
+	int iPort; // 端口号
+};
+
 class CConfig
 {
 private:
@@ -38,6 +43,8 @@ private:
 	string m_strVIN;
 	Logger *m_lpLog;
 	SERIALPORT m_SerialPort;
+	SOCKETCFG m_SocketCfg;
+	int m_iType; // 接收VIN码方式，1：串口，2：Socket，3：文件
 	int m_iSleepTime; // 轮询间隔时间，毫秒
 	int m_iTimeout; // 工作站处理超时时间，秒
 
@@ -108,6 +115,8 @@ public:
 	string getDBName();
 	void getINIConfig();
 	SERIALPORT getSerialPort();
+	SOCKETCFG getSocketCfg();
 	int getSleepTime();
 	int getTimeout();
+	int getType();
 };

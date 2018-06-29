@@ -88,6 +88,8 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		GetPrivateProfileString(_T("Communication"), _T("INI_Config"), _T("./config/INI_config.ini"), buf, BUFSIZ, m_strCfgFile.c_str());
 		m_strINICfgFile = buf;
 
+		m_iType = GetPrivateProfileInt(_T("Communication"), _T("Type"), 1, m_strCfgFile.c_str());
+
 		m_iSleepTime = GetPrivateProfileInt(_T("Communication"), _T("Sleep_Time"), 500, m_strCfgFile.c_str());
 
 		m_iTimeout = GetPrivateProfileInt(_T("Communication"), _T("Timeout"), 600, m_strCfgFile.c_str());
@@ -101,6 +103,10 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		m_SerialPort.btByteSize = (BYTE)GetPrivateProfileInt(_T("Serial_Port"), _T("Byte_Size"), 8, m_strCfgFile.c_str());
 
 		m_SerialPort.btStopBits = (BYTE)GetPrivateProfileInt(_T("Serial_Port"), _T("Stop_Bits"), ONESTOPBIT, m_strCfgFile.c_str());
+
+		m_SocketCfg.iPort = GetPrivateProfileInt(_T("Socket"), _T("Port"), 10001, m_strCfgFile.c_str());
+
+		m_SocketCfg.iProtocol = GetPrivateProfileInt(_T("Socket"), _T("Protocol"), 1, m_strCfgFile.c_str());
 
 	}
 	else // 生成默认INI文件
@@ -241,6 +247,26 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		m_strINICfgFile = "./config/INI_config.ini";
 
+		dwResult = WritePrivateProfileString(_T("Communication"), _T("Type"), _T("1"), m_strCfgFile.c_str());
+		if (!dwResult)
+		{
+			cout << "Writing Type of Communication failed" << endl;
+			m_lpLog->TRACE_ERR("Writing Type of Communication failed");
+		}
+		m_iType = 1;
+
+		outfs.open(m_strCfgFile.c_str(), ios::app);
+		if (outfs.is_open()) {
+			outfs << "; Type = 0, Invalid" << endl;
+			outfs << "; Type = 1, Serial_Port" << endl;
+			outfs << "; Type = 2, Socket" << endl;
+			outfs << "; Type = 3, File" << endl << endl;
+		} else {
+			cout << "Writing Type comment failed" << endl;
+			m_lpLog->TRACE_ERR("Writing Type comment failed");
+		}
+		outfs.close();
+
 		dwResult = WritePrivateProfileString(_T("Communication"), _T("Sleep_Time"), _T("500"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
@@ -350,6 +376,32 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 			m_lpLog->TRACE_ERR("Writing Stop_Bits comment failed");
 		}
 		outfs.close();
+
+		dwResult = WritePrivateProfileString(_T("Socket"), _T("Port"), _T("10001"), m_strCfgFile.c_str());
+		if (!dwResult) {
+			cout << "Writing Protocol of Socket failed" << endl;
+			m_lpLog->TRACE_ERR("Writing Protocol of Socket failed");
+		}
+		m_SocketCfg.iPort = 10001;
+
+		dwResult = WritePrivateProfileString(_T("Socket"), _T("Protocol"), _T("1"), m_strCfgFile.c_str());
+		if (!dwResult) {
+			cout << "Writing Protocol of Socket failed" << endl;
+			m_lpLog->TRACE_ERR("Writing Protocol of Socket failed");
+		}
+		m_SocketCfg.iProtocol = 1;
+
+		outfs.open(m_strCfgFile.c_str(), ios::app);
+		if (outfs.is_open()) {
+			outfs << "; Protocol = 0, Invalid" << endl;
+			outfs << "; Protocol = 1, TCP" << endl;
+			outfs << "; Protocol = 2, UDP" << endl << endl;
+		} else {
+			cout << "Writing Protocol comment failed" << endl;
+			m_lpLog->TRACE_ERR("Writing Protocol comment failed");
+		}
+		outfs.close();
+
 	}
 	this->doReplace();
 	this->getINIConfig();
@@ -521,6 +573,11 @@ SERIALPORT CConfig::getSerialPort()
 	return m_SerialPort;
 }
 
+SOCKETCFG CConfig::getSocketCfg()
+{
+	return m_SocketCfg;
+}
+
 int CConfig::getSleepTime()
 {
 	return m_iSleepTime;
@@ -529,4 +586,9 @@ int CConfig::getSleepTime()
 int CConfig::getTimeout()
 {
 	return m_iTimeout;
+}
+
+int CConfig::getType()
+{
+	return m_iType;
 }
