@@ -254,10 +254,12 @@ string Socket_Base::ReceiveLine() {
 			}
 			pBuf[rv] = '\x00';
 			ret += pBuf;
+			size_t pos = -1;
+			size_t offset = 0;
+			pos = ret.find("\x0A", offset);
+			offset = ret.length();
 			delete[] pBuf;
 			pBuf = nullptr;
-			size_t pos = -1;
-			pos = ret.find("\x0A");
 			if (pos != string::npos) {
 				ret.resize(pos + 1);
 				break;
