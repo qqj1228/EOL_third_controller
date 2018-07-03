@@ -309,6 +309,7 @@ bool CModel::ReadReceFile()
 		{
 			// 处理NCACaster和NCATurningAngle结果文件
 			// 这两个检测项目是抽检项目，不一定每次都有，故不处理返回值
+			// FORI没有发送这两个项目的结果文件，程序就跳过不处理
 			ReadReceFileSingle(i);
 		}
 	}

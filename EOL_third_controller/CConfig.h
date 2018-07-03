@@ -35,6 +35,12 @@ struct SOCKETCFG {
 	int iPort; // 端口号
 };
 
+struct INIVIN {
+	string fullName;
+	string section;
+	string key;
+};
+
 class CConfig
 {
 private:
@@ -44,6 +50,7 @@ private:
 	Logger *m_lpLog;
 	SERIALPORT m_SerialPort;
 	SOCKETCFG m_SocketCfg;
+	INIVIN m_INIVIN;
 	int m_iType; // 接收VIN码方式，1：串口，2：Socket，3：文件
 	int m_iSleepTime; // 轮询间隔时间，毫秒
 	int m_iTimeout; // 工作站处理超时时间，秒
@@ -116,6 +123,7 @@ public:
 	void getINIConfig();
 	SERIALPORT getSerialPort();
 	SOCKETCFG getSocketCfg();
+	INIVIN getINIVIN();
 	int getSleepTime();
 	int getTimeout();
 	int getType();

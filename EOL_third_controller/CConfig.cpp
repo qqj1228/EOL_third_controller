@@ -108,6 +108,15 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 
 		m_SocketCfg.iProtocol = GetPrivateProfileInt(_T("Socket"), _T("Protocol"), 1, m_strCfgFile.c_str());
 
+		GetPrivateProfileString(_T("INIVIN"), _T("FullName"), _T("./ReceFile/Rece_VIN.ini"), buf, BUFSIZ, m_strCfgFile.c_str());
+		m_INIVIN.fullName = buf;
+
+		GetPrivateProfileString(_T("INIVIN"), _T("Section"), _T("VIN"), buf, BUFSIZ, m_strCfgFile.c_str());
+		m_INIVIN.section = buf;
+
+		GetPrivateProfileString(_T("INIVIN"), _T("Key"), _T("VIN"), buf, BUFSIZ, m_strCfgFile.c_str());
+		m_INIVIN.key = buf;
+
 	}
 	else // 生成默认INI文件
 	{
@@ -260,7 +269,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 			outfs << "; Type = 0, Invalid" << endl;
 			outfs << "; Type = 1, Serial_Port" << endl;
 			outfs << "; Type = 2, Socket" << endl;
-			outfs << "; Type = 3, File" << endl << endl;
+			outfs << "; Type = 3, INIVIN File" << endl << endl;
 		} else {
 			cout << "Writing Type comment failed" << endl;
 			m_lpLog->TRACE_ERR("Writing Type comment failed");
@@ -402,6 +411,26 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		outfs.close();
 
+		dwResult = WritePrivateProfileString(_T("INIVIN"), _T("FullName"), _T("./ReceFile/Rece_VIN.ini"), m_strCfgFile.c_str());
+		if (!dwResult) {
+			cout << "Writing FullName of INIVIN failed" << endl;
+			m_lpLog->TRACE_ERR("Writing FullName of INIVIN failed");
+		}
+		m_INIVIN.fullName = "./ReceFile/Rece_VIN.ini";
+
+		dwResult = WritePrivateProfileString(_T("INIVIN"), _T("Section"), _T("VIN"), m_strCfgFile.c_str());
+		if (!dwResult) {
+			cout << "Writing Section of INIVIN failed" << endl;
+			m_lpLog->TRACE_ERR("Writing Section of INIVIN failed");
+		}
+		m_INIVIN.section = "VIN";
+
+		dwResult = WritePrivateProfileString(_T("INIVIN"), _T("Key"), _T("VIN"), m_strCfgFile.c_str());
+		if (!dwResult) {
+			cout << "Writing Key of INIVIN failed" << endl;
+			m_lpLog->TRACE_ERR("Writing Key of INIVIN failed");
+		}
+		m_INIVIN.key = "VIN";
 	}
 	this->doReplace();
 	this->getINIConfig();
@@ -576,6 +605,10 @@ SERIALPORT CConfig::getSerialPort()
 SOCKETCFG CConfig::getSocketCfg()
 {
 	return m_SocketCfg;
+}
+
+INIVIN CConfig::getINIVIN() {
+	return m_INIVIN;
 }
 
 int CConfig::getSleepTime()
