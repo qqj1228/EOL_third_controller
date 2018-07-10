@@ -34,3 +34,9 @@
 		FullName，含有VIN码的INI文件路径及文件名
 		Section，含有VIN码的INI节名
 		Key，含有VIN码的INI key名
+7、INI_config.ini配置项说明：
+	7.1、该文件中每一节即为需要发给FORI检测设备的每个工作站INI文件
+	7.2、每一节内key，value说明：
+		section_num，表示该INI文件内一共有几个section
+		section{n}_name，{n}表示第几个section，该项表示该section的名字。
+		section{n}_start，section{n}_end，{n}表示第几个section，该两项表示从数据库内第几个字段开始到第几个字段为止生成INI，以0为起始值，若该字段为最后一个字段的话可以用-1表示。
