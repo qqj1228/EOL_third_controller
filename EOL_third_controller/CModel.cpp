@@ -35,7 +35,6 @@ CModel::CModel(CConfig *lpCfg, Logger *lpLog)
 		InitINIFile();
 	}
 	InitMapDBTable();
-	InitDeleteFileMap();
 }
 
 CModel::CModel(CConfig *lpCfg, map<string, vector<FIELD>> &mapDBTable, Logger *lpLog)
@@ -70,7 +69,6 @@ CModel::CModel(CConfig *lpCfg, map<string, vector<FIELD>> &mapDBTable, Logger *l
 		InitINIFile();
 	}
 	m_mapDBTable = mapDBTable;
-	InitDeleteFileMap();
 }
 
 
@@ -179,6 +177,8 @@ bool CModel::WriteSendFile()
 		}
 	}
 	m_lpADO->RecordSetClose();
+
+	UpdateDeleteFileMap(m_multimapDeleteSendFile, true);
 	return flag;
 }
 
@@ -337,6 +337,8 @@ bool CModel::ReadReceFile()
 			ReadReceFileSingle(i);
 		}
 	}
+
+	UpdateDeleteFileMap(m_multimapDeleteReceFile, false);
 	return flag;
 }
 
@@ -404,7 +406,7 @@ map<string, vector<FIELD>> CModel::GetMapDBTable()
 	return m_mapDBTable;
 }
 
-void CModel::InitDeleteFileMap(multimap<time_t, string> deleteFile, bool bSend) {
+void CModel::InitDeleteFileMap(multimap<time_t, string> &deleteFile, bool bSend) {
 	long handle;
 	struct _finddata_t fileInfo;
 
@@ -438,4 +440,15 @@ void CModel::InitDeleteFileMap(multimap<time_t, string> deleteFile, bool bSend) 
 void CModel::InitDeleteFileMap() {
 	InitDeleteFileMap(m_multimapDeleteSendFile, true);
 	InitDeleteFileMap(m_multimapDeleteReceFile, false);
+}
+
+void CModel::UpdateDeleteFileMap(multimap<time_t, string> &deleteFile, bool bSend) {
+	InitDeleteFileMap(deleteFile, bSend);
+	int count = deleteFile.size() - (m_lpCfg->getDirInfo(bSend)).m_iMaxFileNum;
+	if (count > 0) {
+		for (int i = 0; i < count; i++) {
+			remove(deleteFile.begin()->second.c_str());
+			deleteFile.erase(deleteFile.begin());
+		}
+	}
 }

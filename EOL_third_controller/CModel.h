@@ -42,7 +42,8 @@ public:
 	void GetColumns(string strTableName, vector<FIELD> *lpvColumns);
 	void InitMapDBTable();
 	void InitINIFile();
-	void InitDeleteFileMap(multimap<time_t, string> deleteFile, bool bSend);
+	void InitDeleteFileMap(multimap<time_t, string> &deleteFile, bool bSend);
 	void InitDeleteFileMap();
+	void UpdateDeleteFileMap(multimap<time_t, string> &deleteFile, bool bSend);
 };
 
