@@ -19,7 +19,9 @@ CModel::CModel(CConfig *lpCfg, Logger *lpLog)
 	);
 	if (!m_lpADO->OnInitADOConn())
 	{
+		WORD wOrigin = setConsoleColor(12, 14);
 		cout << "Open DataBase failed!" << endl;
+		setConsoleColor(wOrigin);
 		m_lpLog->TRACE_FATAL("Open DataBase failed!");
 		return;
 	}
@@ -33,6 +35,7 @@ CModel::CModel(CConfig *lpCfg, Logger *lpLog)
 		InitINIFile();
 	}
 	InitMapDBTable();
+	InitDeleteFileMap();
 }
 
 CModel::CModel(CConfig *lpCfg, map<string, vector<FIELD>> &mapDBTable, Logger *lpLog)
@@ -51,7 +54,9 @@ CModel::CModel(CConfig *lpCfg, map<string, vector<FIELD>> &mapDBTable, Logger *l
 	);
 	if (!m_lpADO->OnInitADOConn())
 	{
+		WORD wOrigin = setConsoleColor(12, 14);
 		cout << "Open DataBase failed!" << endl;
+		setConsoleColor(wOrigin);
 		m_lpLog->TRACE_FATAL("Open DataBase failed!");
 		return;
 	}
@@ -65,6 +70,7 @@ CModel::CModel(CConfig *lpCfg, map<string, vector<FIELD>> &mapDBTable, Logger *l
 		InitINIFile();
 	}
 	m_mapDBTable = mapDBTable;
+	InitDeleteFileMap();
 }
 
 
@@ -93,7 +99,9 @@ bool CModel::WriteSendFile()
 
 	if (!m_bDBOK)
 	{
+		WORD wOrigin = setConsoleColor(12, 14);
 		cout << "No DataBase connection!" << endl;
+		setConsoleColor(wOrigin);
 		m_lpLog->TRACE_FATAL("No DataBase connection!");
 		return false;
 	}
@@ -105,7 +113,9 @@ bool CModel::WriteSendFile()
 	strVehicleType = m_lpADO->GetRecord("VehicleType", 0);
 	if (strVehicleType == "")
 	{
+		WORD wOrigin = setConsoleColor(12, 14);
 		cout << "Get VehicleType from VehicleInfo failed, VIN code: " << strVIN << " is wrong!" << endl;
+		setConsoleColor(wOrigin);
 		m_lpLog->TRACE_FATAL("Get VehicleType from VehicleInfo failed, VIN code: %s is wrong!", strVIN.c_str());
 		return false;
 	}
@@ -113,7 +123,9 @@ bool CModel::WriteSendFile()
 	dwResult = WritePrivateProfileString(m_SendFile.vSection[0].strName.c_str(), "VIN", strVIN.c_str(), m_SendFile.strFilePath.c_str());
 	if (!dwResult)
 	{
+		WORD wOrigin = setConsoleColor(12, 14);
 		cout << "Write VIN failed" << endl;
+		setConsoleColor(wOrigin);
 		m_lpLog->TRACE_ERR("Write VIN failed");
 		flag = false;
 	}
@@ -148,7 +160,9 @@ bool CModel::WriteSendFile()
 			strValue = string(m_lpADO->GetRecord(strKey.c_str(), 0));
 			if (strValue == "")
 			{
+				WORD wOrigin = setConsoleColor(12, 14);
 				cout << "Get " << strKey << " from " << strTableName << " failed, VehicleType: " << strVehicleType << " is wrong!" << endl;
+				setConsoleColor(wOrigin);
 				m_lpLog->TRACE_FATAL("Get %s from %s failed, VehicleType: %s is wrong!", strKey.c_str(), strTableName.c_str(), strVehicleType.c_str());
 				return false;
 			}
@@ -156,7 +170,9 @@ bool CModel::WriteSendFile()
 			dwResult = WritePrivateProfileString(strSection.c_str(), strKey.c_str(), strValue.c_str(), m_SendFile.strFilePath.c_str());
 			if (!dwResult)
 			{
+				WORD wOrigin = setConsoleColor(12, 14);
 				cout << "Write " << strKey << " : " << strValue << " failed" << endl;
+				setConsoleColor(wOrigin);
 				m_lpLog->TRACE_ERR("Write %s : %s failed", strKey.c_str(), strValue.c_str());
 				flag = false;
 			}
@@ -193,6 +209,7 @@ void CModel::GetTableName(vector<string> *lpvTableName)
 	}
 	catch (_com_error e)
 	{
+		WORD wOrigin = setConsoleColor(12, 14);
 		if (e.Description() == _bstr_t("")) {
 			cout << "COM Error: " << e.ErrorMessage() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", e.ErrorMessage());
@@ -200,6 +217,7 @@ void CModel::GetTableName(vector<string> *lpvTableName)
 			cout << "COM Error: " << e.Description() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
 		}
+		setConsoleColor(wOrigin);
 	}
 	cout << "GetTableName finished" << endl;
 	m_lpLog->TRACE_INFO("GetTableName finished");
@@ -236,6 +254,7 @@ void CModel::GetColumns(string strTableName, vector<FIELD> *lpvColumns)
 	}
 	catch (_com_error e)
 	{
+		WORD wOrigin = setConsoleColor(12, 14);
 		if (e.Description() == _bstr_t("")) {
 			cout << "COM Error: " << e.ErrorMessage() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", e.ErrorMessage());
@@ -243,6 +262,7 @@ void CModel::GetColumns(string strTableName, vector<FIELD> *lpvColumns)
 			cout << "COM Error: " << e.Description() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
 		}
+		setConsoleColor(wOrigin);
 	}
 }
 
@@ -250,7 +270,9 @@ void CModel::InitMapDBTable()
 {
 	if (!m_bDBOK)
 	{
+		WORD wOrigin = setConsoleColor(12, 14);
 		cout << "No DataBase connection!" << endl;
+		setConsoleColor(wOrigin);
 		m_lpLog->TRACE_FATAL("No DataBase connection!");
 		return;
 	}
@@ -295,7 +317,9 @@ bool CModel::ReadReceFile()
 	bool flag = true;
 	if (!m_bDBOK)
 	{
+		WORD wOrigin = setConsoleColor(12, 14);
 		cout << "No DataBase connection!" << endl;
+		setConsoleColor(wOrigin);
 		m_lpLog->TRACE_FATAL("No DataBase connection!");
 		return false;
 	}
@@ -357,7 +381,9 @@ bool CModel::ReadReceFileSingle(int iIndex)
 			GetPrivateProfileString(strSection.c_str(), strKey.c_str(), _T(""), buf, BUFSIZ, m_ReceFile[iIndex].strFilePath.c_str());
 			if (!strcmp(buf, ""))
 			{
+				WORD wOrigin = setConsoleColor(12, 14);
 				cout << "Read " << strKey << " in " << strSection << " failed" << endl;
+				setConsoleColor(wOrigin);
 				m_lpLog->TRACE_ERR("Read %s in %s failed", strKey.c_str(), strSection.c_str());
 			}
 			strNor = Normalize(buf, (size_t)vFields[j].length);
@@ -376,4 +402,40 @@ bool CModel::ReadReceFileSingle(int iIndex)
 map<string, vector<FIELD>> CModel::GetMapDBTable()
 {
 	return m_mapDBTable;
+}
+
+void CModel::InitDeleteFileMap(multimap<time_t, string> deleteFile, bool bSend) {
+	long handle;
+	struct _finddata_t fileInfo;
+
+	string strDir = m_lpCfg->getDirInfo(bSend).m_strDirPath + "/*";
+	handle = _findfirst(strDir.c_str(), &fileInfo);
+	if (handle != -1) {
+		do {
+			// È¥³ýÎÄ¼þ¼Ð
+			if (!(fileInfo.attrib & _A_SUBDIR)) {
+				deleteFile.insert(pair<time_t, string>(fileInfo.time_write, m_lpCfg->getDirInfo(bSend).m_strDirPath + fileInfo.name));
+			}
+		} while (!_findnext(handle, &fileInfo));
+		_findclose(handle);
+
+#ifdef _DEBUG
+		multimap<time_t, string>::iterator iter;
+		multimap<time_t, string>::iterator end = deleteFile.end();
+		for (iter = deleteFile.begin(); iter != end; ++iter) {
+			cout << iter->first << " - " << iter->second << endl;
+		}
+		cout << "============================" << endl;
+#endif // _DEBUG
+
+	} else {
+		char err[BUFSIZ];
+		_strerror_s(err, nullptr);
+		cout << "_findfirst " << m_lpCfg->getDirInfo(bSend).m_strDirPath << " error: " << err << endl;
+	}
+}
+
+void CModel::InitDeleteFileMap() {
+	InitDeleteFileMap(m_multimapDeleteSendFile, true);
+	InitDeleteFileMap(m_multimapDeleteReceFile, false);
 }

@@ -36,37 +36,67 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 
 	if (bFile) // ¶ÁINIÎÄ¼þ
 	{
-		m_iWorkStation = GetPrivateProfileInt(TEXT("Work_Station"), _T("Work_Station"), 0, m_strCfgFile.c_str());
+		m_iWorkStation = GetPrivateProfileInt(_T("Work_Station"), _T("Work_Station"), 0, m_strCfgFile.c_str());
 		if (m_iWorkStation > 4 && m_iWorkStation <= 0)
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Read Work_Station failed, using default value" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Read Work_Station failed, using default value");
 			m_iWorkStation = 1;
 		}
 
+		GetPrivateProfileString(_T("Send_File_Path"), _T("Dir"), _T(""), buf, BUFSIZ, m_strCfgFile.c_str());
+		m_SendDir.m_strDirPath = buf;
+		if (!strcmp(buf, "")) {
+			WORD wOrigin = setConsoleColor(12, 14);
+			cout << "Read Dir in Send_File_Path failed, using default value" << endl;
+			setConsoleColor(wOrigin);
+			m_lpLog->TRACE_ERR("Read Dir in Send_File_Path failed, using default value");
+			m_SendDir.m_strDirPath = "./SendFile/";
+		}
+
+		m_SendDir.m_iMaxFileNum = GetPrivateProfileInt(_T("Send_File_Path"), _T("MaxFileNum"), 100, m_strCfgFile.c_str());
+
 		length= this->getSendFileCount();
 		for (int i = 0; i < length; i++)
 		{
-			GetPrivateProfileString(TEXT("Send_File_Path"), m_SendFile[i].strName.c_str(), _T(""), buf, BUFSIZ, m_strCfgFile.c_str());
-			m_SendFile[i].strFilePath = buf;
+			GetPrivateProfileString(_T("Send_File_Path"), m_SendFile[i].strName.c_str(), _T(""), buf, BUFSIZ, m_strCfgFile.c_str());
+			m_SendFile[i].strFilePath = m_SendDir.m_strDirPath + "/" + buf;
 			if (!strcmp(buf, ""))
 			{
+				WORD wOrigin = setConsoleColor(12, 14);
 				cout << "Read " << m_SendFile[i].strName << " in Send_File_Path failed, using default value" << endl;
+				setConsoleColor(wOrigin);
 				m_lpLog->TRACE_ERR("Read %s in Send_File_Path failed, using default value", m_SendFile[i].strName.c_str());
-				m_SendFile[i].strFilePath = "Send_" + m_SendFile[i].strName + "_%VIN%.ini";
+				m_SendFile[i].strFilePath = m_SendDir.m_strDirPath + "/Send_" + m_SendFile[i].strName + "_%VIN%.ini";
 			}
 		}
+
+		GetPrivateProfileString(_T("Rece_File_Path"), _T("Dir"), _T(""), buf, BUFSIZ, m_strCfgFile.c_str());
+		m_ReceDir.m_strDirPath = buf;
+		if (!strcmp(buf, "")) {
+			WORD wOrigin = setConsoleColor(12, 14);
+			cout << "Read Dir in Rece_File_Path failed, using default value" << endl;
+			setConsoleColor(wOrigin);
+			m_lpLog->TRACE_ERR("Read Dir in Rece_File_Path failed, using default value");
+			m_ReceDir.m_strDirPath = "./ReceFile/";
+		}
+
+		m_ReceDir.m_iMaxFileNum = GetPrivateProfileInt(_T("Rece_File_Path"), _T("MaxFileNum"), 100, m_strCfgFile.c_str());
 
 		length = this->getReceFileCount();
 		for (int i = 0; i < length; i++)
 		{
-			GetPrivateProfileString(TEXT("Rece_File_Path"), m_ReceFile[i].strName.c_str(), _T(""), buf, BUFSIZ, m_strCfgFile.c_str());
-			m_ReceFile[i].strFilePath = buf;
+			GetPrivateProfileString(_T("Rece_File_Path"), m_ReceFile[i].strName.c_str(), _T(""), buf, BUFSIZ, m_strCfgFile.c_str());
+			m_ReceFile[i].strFilePath = m_ReceDir.m_strDirPath + "/" + buf;
 			if (!strcmp(buf, ""))
 			{
+				WORD wOrigin = setConsoleColor(12, 14);
 				cout << "Read " << m_ReceFile[i].strName << " in Rece_File_Path failed, using default value" << endl;
+				setConsoleColor(wOrigin);
 				m_lpLog->TRACE_ERR("Read %s in Rece_File_Path failed, using default value", m_ReceFile[i].strName.c_str());
-				m_ReceFile[i].strFilePath = "Rece_" + m_ReceFile[i].strName + "_%VIN%.ini";
+				m_ReceFile[i].strFilePath = m_ReceDir.m_strDirPath + "/Rece_" + m_ReceFile[i].strName + "_%VIN%.ini";
 			}
 		}
 
@@ -131,7 +161,9 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		dwResult = WritePrivateProfileString(_T("Work_Station"), _T("Work_Station"), _T("1"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Work_Station failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Work_Station failed");
 		}
 		m_iWorkStation = 1;
@@ -148,19 +180,42 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		else
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing work_station comment failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing work_station comment failed");
 		}
 		outfs.close();
 
+		dwResult = WritePrivateProfileString(_T("Send_File_Path"), _T("Dir"), _T("./SendFile/"), m_strCfgFile.c_str());
+		if (!dwResult) {
+			WORD wOrigin = setConsoleColor(12, 14);
+			cout << "Writing Dir in Send_File_Path failed" << endl;
+			setConsoleColor(wOrigin);
+			m_lpLog->TRACE_ERR("Writing Dir in Send_File_Path failed");
+		}
+		m_SendDir.m_strDirPath = "./SendFile/";
+
+		dwResult = WritePrivateProfileString(_T("Send_File_Path"), _T("MaxFileNum"), _T("100"), m_strCfgFile.c_str());
+		if (!dwResult) {
+			WORD wOrigin = setConsoleColor(12, 14);
+			cout << "Writing MaxFileNum in Send_File_Path failed" << endl;
+			setConsoleColor(wOrigin);
+			m_lpLog->TRACE_ERR("Writing MaxFileNum in Send_File_Path failed");
+		}
+		m_SendDir.m_iMaxFileNum = 100;
+
 		length = this->getSendFileCount();
 		for (int i = 0; i < length; i++)
 		{
-			m_SendFile[i].strFilePath = "./SendFile/Send_" + m_SendFile[i].strName + "_%VIN%.ini";
-			dwResult = WritePrivateProfileString(TEXT("Send_File_Path"), m_SendFile[i].strName.c_str(), m_SendFile[i].strFilePath.c_str(), m_strCfgFile.c_str());
+			string strFileName = "Send_" + m_SendFile[i].strName + "_%VIN%.ini";
+			dwResult = WritePrivateProfileString(_T("Send_File_Path"), m_SendFile[i].strName.c_str(), strFileName.c_str(), m_strCfgFile.c_str());
+			m_SendFile[i].strFilePath = m_SendDir.m_strDirPath + "/" + strFileName;
 			if (!dwResult)
 			{
+				WORD wOrigin = setConsoleColor(12, 14);
 				cout << "Writing " << m_SendFile[i].strName << " in Send_File_Path failed" << endl;
+				setConsoleColor(wOrigin);
 				m_lpLog->TRACE_ERR("Writing %s in Send_File_Path failed", m_SendFile[i].strName.c_str());
 			}
 		}
@@ -172,19 +227,42 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		else
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Send_File_Path comment failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Send_File_Path comment failed");
 		}
 		outfs.close();
 
+		dwResult = WritePrivateProfileString(_T("Rece_File_Path"), _T("Dir"), _T("./ReceFile/"), m_strCfgFile.c_str());
+		if (!dwResult) {
+			WORD wOrigin = setConsoleColor(12, 14);
+			cout << "Writing Dir in Rece_File_Path failed" << endl;
+			setConsoleColor(wOrigin);
+			m_lpLog->TRACE_ERR("Writing Dir in Rece_File_Path failed");
+		}
+		m_ReceDir.m_strDirPath = "./ReceFile/";
+
+		dwResult = WritePrivateProfileString(_T("Rece_File_Path"), _T("MaxFileNum"), _T("100"), m_strCfgFile.c_str());
+		if (!dwResult) {
+			WORD wOrigin = setConsoleColor(12, 14);
+			cout << "Writing MaxFileNum in Rece_File_Path failed" << endl;
+			setConsoleColor(wOrigin);
+			m_lpLog->TRACE_ERR("Writing MaxFileNum in Rece_File_Path failed");
+		}
+		m_ReceDir.m_iMaxFileNum = 100;
+
 		length = this->getReceFileCount();
 		for (int i = 0; i < length; i++)
 		{
-			m_ReceFile[i].strFilePath = "./ReceFile/Rece_" + m_ReceFile[i].strName + "_%VIN%.ini";
-			dwResult = WritePrivateProfileString(_T("Rece_File_Path"), m_ReceFile[i].strName.c_str(), m_ReceFile[i].strFilePath.c_str(), m_strCfgFile.c_str());
+			string strFileName = "Rece_" + m_ReceFile[i].strName + "_%VIN%.ini";
+			dwResult = WritePrivateProfileString(_T("Rece_File_Path"), m_ReceFile[i].strName.c_str(), strFileName.c_str(), m_strCfgFile.c_str());
+			m_ReceFile[i].strFilePath = m_ReceDir.m_strDirPath + "/" + strFileName;
 			if (!dwResult)
 			{
+				WORD wOrigin = setConsoleColor(12, 14);
 				cout << "Writing " << m_ReceFile[i].strName << " in Rece_File_Path failed" << endl;
+				setConsoleColor(wOrigin);
 				m_lpLog->TRACE_ERR("Writing %s in Rece_File_Path failed", m_ReceFile[i].strName.c_str());
 			}
 		}
@@ -196,7 +274,9 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		else
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Rece_File_Path comment failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Rece_File_Path comment failed");
 		}
 		outfs.close();
@@ -204,7 +284,9 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		dwResult = WritePrivateProfileString(_T("DataBase"), _T("IP"), _T("127.0.0.1"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing IP of DataBase failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing IP of DataBase failed");
 		}
 		m_strIP = "127.0.0.1";
@@ -212,7 +294,9 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		dwResult = WritePrivateProfileString(_T("DataBase"), _T("Port"), _T("2272"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Port of DataBase failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Port of DataBase failed");
 		}
 		m_strPort = "2272";
@@ -220,7 +304,9 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		dwResult = WritePrivateProfileString(_T("DataBase"), _T("User"), _T("sa"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing User of DataBase failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing User of DataBase failed");
 		}
 		m_strUser = "sa";
@@ -228,7 +314,9 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		dwResult = WritePrivateProfileString(_T("DataBase"), _T("Pwd"), _T("sh49"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Pwd of DataBase failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Pwd of DataBase failed");
 		}
 		m_strPwd = "sh49";
@@ -236,7 +324,9 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		dwResult = WritePrivateProfileString(_T("DataBase"), _T("DBName"), _T("JAC"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing DBName of DataBase failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing DBName of DataBase failed");
 		}
 		m_strDBName = "JAC";
@@ -251,7 +341,9 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		dwResult = WritePrivateProfileString(_T("Communication"), _T("INI_Config"), _T("./config/INI_config.ini"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing INI_Config of Communication failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing INI_Config of Communication failed");
 		}
 		m_strINICfgFile = "./config/INI_config.ini";
@@ -259,7 +351,9 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		dwResult = WritePrivateProfileString(_T("Communication"), _T("Type"), _T("1"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Type of Communication failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Type of Communication failed");
 		}
 		m_iType = 1;
@@ -271,7 +365,9 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 			outfs << "; Type = 2, Socket" << endl;
 			outfs << "; Type = 3, INIVIN File" << endl << endl;
 		} else {
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Type comment failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Type comment failed");
 		}
 		outfs.close();
@@ -279,7 +375,9 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		dwResult = WritePrivateProfileString(_T("Communication"), _T("Sleep_Time"), _T("500"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Sleep_Time of Communication failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Sleep_Time in Communication failed");
 		}
 		m_iSleepTime = 500;
@@ -291,7 +389,9 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		else
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Sleep_Time comment failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Sleep_Time comment failed");
 		}
 		outfs.close();
@@ -299,7 +399,9 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		dwResult = WritePrivateProfileString(_T("Communication"), _T("Timeout"), _T("600"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Timeout of Communication failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Timeout in Communication failed");
 		}
 		m_iTimeout = 600;
@@ -311,7 +413,9 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		else
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Timeout comment failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Timeout comment failed");
 		}
 		outfs.close();
@@ -319,7 +423,9 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		dwResult = WritePrivateProfileString(_T("Serial_Port"), _T("Port"), _T("2"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Port of Serial_Port failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Port of Serial_Port failed");
 		}
 		m_SerialPort.dwPort = 2;
@@ -327,7 +433,9 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		dwResult = WritePrivateProfileString(_T("Serial_Port"), _T("Baud_Rate"), _T("9600"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Baud_Rate of Serial_Port failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Baud_Rate of Serial_Port failed");
 		}
 		m_SerialPort.dwBaudRate = 9600;
@@ -335,7 +443,9 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		dwResult = WritePrivateProfileString(_T("Serial_Port"), _T("Parity"), _T("NOPARITY"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Parity of Serial_Port failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Parity of Serial_Port failed");
 		}
 		m_SerialPort.btParity = NOPARITY;
@@ -351,7 +461,9 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		else
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Parity comment failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Parity comment failed");
 		}
 		outfs.close();
@@ -359,7 +471,9 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		dwResult = WritePrivateProfileString(_T("Serial_Port"), _T("Byte_Size"), _T("8"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Byte_Size of Serial_Port failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Byte_Size of Serial_Port failed");
 		}
 		m_SerialPort.btByteSize = 8;
@@ -367,7 +481,9 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		dwResult = WritePrivateProfileString(_T("Serial_Port"), _T("Stop_Bits"), _T("ONESTOPBIT"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Stop_Bits of Serial_Port failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Stop_Bits of Serial_Port failed");
 		}
 		m_SerialPort.btStopBits = ONESTOPBIT;
@@ -381,21 +497,27 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		else
 		{
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Stop_Bits comment failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Stop_Bits comment failed");
 		}
 		outfs.close();
 
 		dwResult = WritePrivateProfileString(_T("Socket"), _T("Port"), _T("10001"), m_strCfgFile.c_str());
 		if (!dwResult) {
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Protocol of Socket failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Protocol of Socket failed");
 		}
 		m_SocketCfg.iPort = 10001;
 
 		dwResult = WritePrivateProfileString(_T("Socket"), _T("Protocol"), _T("1"), m_strCfgFile.c_str());
 		if (!dwResult) {
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Protocol of Socket failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Protocol of Socket failed");
 		}
 		m_SocketCfg.iProtocol = 1;
@@ -406,28 +528,36 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 			outfs << "; Protocol = 1, TCP" << endl;
 			outfs << "; Protocol = 2, UDP" << endl << endl;
 		} else {
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Protocol comment failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Protocol comment failed");
 		}
 		outfs.close();
 
 		dwResult = WritePrivateProfileString(_T("INIVIN"), _T("FullName"), _T("./ReceFile/Rece_VIN.ini"), m_strCfgFile.c_str());
 		if (!dwResult) {
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing FullName of INIVIN failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing FullName of INIVIN failed");
 		}
 		m_INIVIN.fullName = "./ReceFile/Rece_VIN.ini";
 
 		dwResult = WritePrivateProfileString(_T("INIVIN"), _T("Section"), _T("VIN"), m_strCfgFile.c_str());
 		if (!dwResult) {
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Section of INIVIN failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Section of INIVIN failed");
 		}
 		m_INIVIN.section = "VIN";
 
 		dwResult = WritePrivateProfileString(_T("INIVIN"), _T("Key"), _T("VIN"), m_strCfgFile.c_str());
 		if (!dwResult) {
+			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Key of INIVIN failed" << endl;
+			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Key of INIVIN failed");
 		}
 		m_INIVIN.key = "VIN";
@@ -624,4 +754,12 @@ int CConfig::getTimeout()
 int CConfig::getType()
 {
 	return m_iType;
+}
+
+DIRINFO CConfig::getDirInfo(bool bSend) {
+	if (bSend) {
+		return m_SendDir;
+	} else {
+		return m_ReceDir;
+	}
 }

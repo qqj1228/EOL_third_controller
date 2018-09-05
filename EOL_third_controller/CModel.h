@@ -17,8 +17,12 @@ class CModel
 	CADOConn *m_lpADO;
 	Logger *m_lpLog;
 
-	// map<表名，vector<字段信息>
+	// map<表名，vector<字段信息>>
 	map<string, vector<FIELD>> m_mapDBTable;
+
+	// multimap<修改时间，文件全路径>
+	multimap<time_t, string> m_multimapDeleteSendFile;
+	multimap<time_t, string> m_multimapDeleteReceFile;
 
 	INIFILE m_SendFile;
 	// 若m_ReceFile数组中的3个元素都一样，则表示只有一个元素
@@ -38,5 +42,7 @@ public:
 	void GetColumns(string strTableName, vector<FIELD> *lpvColumns);
 	void InitMapDBTable();
 	void InitINIFile();
+	void InitDeleteFileMap(multimap<time_t, string> deleteFile, bool bSend);
+	void InitDeleteFileMap();
 };
 

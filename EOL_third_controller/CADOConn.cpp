@@ -34,6 +34,7 @@ bool CADOConn::OnInitADOConn()
 	catch (_com_error e)
 	{
 		// 显示错误信息
+		WORD wOrigin = setConsoleColor(12, 14);
 		if (e.Description() == _bstr_t("")) {
 			cout << "COM Error: " << e.ErrorMessage() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", e.ErrorMessage());
@@ -41,6 +42,7 @@ bool CADOConn::OnInitADOConn()
 			cout << "COM Error: " << e.Description() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
 		}
+		setConsoleColor(wOrigin);
 		return false;
 	}
 }
@@ -60,6 +62,7 @@ _RecordsetPtr& CADOConn::GetRecordSet(_bstr_t bstrSQL)
 	}
 	catch (_com_error e)
 	{
+		WORD wOrigin = setConsoleColor(12, 14);
 		if (e.Description() == _bstr_t("")) {
 			cout << "COM Error: " << e.ErrorMessage() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", e.ErrorMessage());
@@ -67,6 +70,7 @@ _RecordsetPtr& CADOConn::GetRecordSet(_bstr_t bstrSQL)
 			cout << "COM Error: " << e.Description() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
 		}
+		setConsoleColor(wOrigin);
 	}
 	// 返回记录集
 	return m_pRecordset;
@@ -86,6 +90,7 @@ bool CADOConn::ExecuteSQL(_bstr_t bstrSQL)
 	}
 	catch (_com_error e)
 	{
+		WORD wOrigin = setConsoleColor(12, 14);
 		if (e.Description() == _bstr_t("")) {
 			cout << "COM Error: " << e.ErrorMessage() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", e.ErrorMessage());
@@ -93,6 +98,7 @@ bool CADOConn::ExecuteSQL(_bstr_t bstrSQL)
 			cout << "COM Error: " << e.Description() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
 		}
+		setConsoleColor(wOrigin);
 		return false;
 	}
 }
@@ -108,6 +114,7 @@ void CADOConn::ExitConnect()
 	}
 	catch (_com_error e)
 	{
+		WORD wOrigin = setConsoleColor(12, 14);
 		if (e.Description() == _bstr_t("")) {
 			cout << "COM Error: " << e.ErrorMessage() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", e.ErrorMessage());
@@ -115,6 +122,7 @@ void CADOConn::ExitConnect()
 			cout << "COM Error: " << e.Description() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
 		}
+		setConsoleColor(wOrigin);
 	}
 	//释放环境
 	::CoUninitialize();
@@ -135,6 +143,7 @@ string CADOConn::GetRecord(_bstr_t bstrField, size_t iIndex)
 	}
 	catch (_com_error e)
 	{
+		WORD wOrigin = setConsoleColor(12, 14);
 		if (e.Description() == _bstr_t("")) {
 			cout << "COM Error: " << e.ErrorMessage() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", e.ErrorMessage());
@@ -142,6 +151,7 @@ string CADOConn::GetRecord(_bstr_t bstrField, size_t iIndex)
 			cout << "COM Error: " << e.Description() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
 		}
+		setConsoleColor(wOrigin);
 		return str;
 	}
 	return str;
@@ -159,6 +169,7 @@ void CADOConn::RecordSetClose()
 	}
 	catch (_com_error e)
 	{
+		WORD wOrigin = setConsoleColor(12, 14);
 		if (e.Description() == _bstr_t("")) {
 			cout << "COM Error: " << e.ErrorMessage() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", e.ErrorMessage());
@@ -166,6 +177,7 @@ void CADOConn::RecordSetClose()
 			cout << "COM Error: " << e.Description() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
 		}
+		setConsoleColor(wOrigin);
 	}
 }
 
@@ -180,6 +192,7 @@ _RecordsetPtr& CADOConn::GetSchemaTables()
 	}
 	catch (_com_error e)
 	{
+		WORD wOrigin = setConsoleColor(12, 14);
 		if (e.Description() == _bstr_t("")) {
 			cout << "COM Error: " << e.ErrorMessage() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", e.ErrorMessage());
@@ -187,6 +200,7 @@ _RecordsetPtr& CADOConn::GetSchemaTables()
 			cout << "COM Error: " << e.Description() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
 		}
+		setConsoleColor(wOrigin);
 	}
 	return m_pRecordset;
 }
@@ -202,6 +216,7 @@ _RecordsetPtr& CADOConn::GetSchemaColumns(_bstr_t bstrSQL)
 	}
 	catch (_com_error e)
 	{
+		WORD wOrigin = setConsoleColor(12, 14);
 		if (e.Description() == _bstr_t("")) {
 			cout << "COM Error: " << e.ErrorMessage() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", e.ErrorMessage());
@@ -209,6 +224,7 @@ _RecordsetPtr& CADOConn::GetSchemaColumns(_bstr_t bstrSQL)
 			cout << "COM Error: " << e.Description() << endl;
 			m_lpLog->TRACE_ERR("COM Error: %s", (char *)e.Description());
 		}
+		setConsoleColor(wOrigin);
 	}
 	return m_pRecordset;
 }

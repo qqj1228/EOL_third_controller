@@ -69,3 +69,41 @@ static int32_t mkMultiDir(const std::string &directoryPath)
 	}
 	return 0;
 }
+
+// 设置控制台文字前景和背景色, 返回原来的颜色属性
+// 0-黑		1-蓝		2-绿		3-浅绿		4-红		5-紫		6-黄		7-白
+// 8-灰		9-淡蓝	10-淡绿	11-淡浅绿	12-淡红	13-淡紫	14-淡黄	15-亮白
+static WORD setConsoleColor(int iForeColor, int iBackColor) {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (hConsole == INVALID_HANDLE_VALUE) {
+		return 0;
+	}
+	CONSOLE_SCREEN_BUFFER_INFO info;
+	GetConsoleScreenBufferInfo(hConsole, &info);
+	WORD wAttributes = info.wAttributes;
+	bool bResult = SetConsoleTextAttribute(hConsole, iForeColor + iBackColor * 0x10);
+	if (!bResult) {
+		return 0;
+	}
+	return wAttributes;
+}
+
+// 设置控制台颜色属性, 返回原来的颜色属性
+// 前景色组合：
+// FOREGROUND_BLUE-0x0001	FOREGROUND_GREEN-0x0002		FOREGROUND_RED-0x0004	FOREGROUND_INTENSITY-0x0008
+// 背景色组合（其实就是前景色*0x10）：
+// BACKGROUND_BLUE-0x0010	BACKGROUND_GREEN-0x0020		BACKGROUND_RED-0x0040	BACKGROUND_INTENSITY-0x0080
+static WORD setConsoleColor(WORD wAttributes) {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (hConsole == INVALID_HANDLE_VALUE) {
+		return 0;
+	}
+	CONSOLE_SCREEN_BUFFER_INFO info;
+	GetConsoleScreenBufferInfo(hConsole, &info);
+	WORD wOrigin = info.wAttributes;
+	bool bResult = SetConsoleTextAttribute(hConsole, wAttributes);
+	if (!bResult) {
+		return 0;
+	}
+	return wOrigin;
+}

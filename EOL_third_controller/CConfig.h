@@ -41,6 +41,11 @@ struct INIVIN {
 	string key;
 };
 
+struct DIRINFO {
+	string m_strDirPath;
+	int m_iMaxFileNum;
+};
+
 class CConfig
 {
 private:
@@ -63,6 +68,8 @@ private:
 	 *                   4, Brake
 	**/
 	int m_iWorkStation;
+
+	DIRINFO m_SendDir, m_ReceDir;
 
 	/**
 	 * m_SendFile[0] - NCA
@@ -127,4 +134,5 @@ public:
 	int getSleepTime();
 	int getTimeout();
 	int getType();
+	DIRINFO getDirInfo(bool bSend);
 };
