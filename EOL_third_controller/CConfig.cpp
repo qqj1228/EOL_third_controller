@@ -47,56 +47,56 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 
 		GetPrivateProfileString(_T("Send_File_Path"), _T("Dir"), _T(""), buf, BUFSIZ, m_strCfgFile.c_str());
-		m_SendDir.m_strDirPath = buf;
+		m_SendDir.strDirPath = buf;
 		if (!strcmp(buf, "")) {
 			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Read Dir in Send_File_Path failed, using default value" << endl;
 			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Read Dir in Send_File_Path failed, using default value");
-			m_SendDir.m_strDirPath = "./SendFile/";
+			m_SendDir.strDirPath = "./SendFile/";
 		}
 
-		m_SendDir.m_iMaxFileNum = GetPrivateProfileInt(_T("Send_File_Path"), _T("MaxFileNum"), 100, m_strCfgFile.c_str());
+		m_SendDir.iMaxFileNum = GetPrivateProfileInt(_T("Send_File_Path"), _T("MaxFileNum"), 100, m_strCfgFile.c_str());
 
 		length= this->getSendFileCount();
 		for (int i = 0; i < length; i++)
 		{
 			GetPrivateProfileString(_T("Send_File_Path"), m_SendFile[i].strName.c_str(), _T(""), buf, BUFSIZ, m_strCfgFile.c_str());
-			m_SendFile[i].strFilePath = m_SendDir.m_strDirPath + "/" + buf;
+			m_SendFile[i].strFilePath = m_SendDir.strDirPath + "/" + buf;
 			if (!strcmp(buf, ""))
 			{
 				WORD wOrigin = setConsoleColor(12, 14);
 				cout << "Read " << m_SendFile[i].strName << " in Send_File_Path failed, using default value" << endl;
 				setConsoleColor(wOrigin);
 				m_lpLog->TRACE_ERR("Read %s in Send_File_Path failed, using default value", m_SendFile[i].strName.c_str());
-				m_SendFile[i].strFilePath = m_SendDir.m_strDirPath + "/Send_" + m_SendFile[i].strName + "_%VIN%.ini";
+				m_SendFile[i].strFilePath = m_SendDir.strDirPath + "/Send_" + m_SendFile[i].strName + "_%VIN%.ini";
 			}
 		}
 
 		GetPrivateProfileString(_T("Rece_File_Path"), _T("Dir"), _T(""), buf, BUFSIZ, m_strCfgFile.c_str());
-		m_ReceDir.m_strDirPath = buf;
+		m_ReceDir.strDirPath = buf;
 		if (!strcmp(buf, "")) {
 			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Read Dir in Rece_File_Path failed, using default value" << endl;
 			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Read Dir in Rece_File_Path failed, using default value");
-			m_ReceDir.m_strDirPath = "./ReceFile/";
+			m_ReceDir.strDirPath = "./ReceFile/";
 		}
 
-		m_ReceDir.m_iMaxFileNum = GetPrivateProfileInt(_T("Rece_File_Path"), _T("MaxFileNum"), 100, m_strCfgFile.c_str());
+		m_ReceDir.iMaxFileNum = GetPrivateProfileInt(_T("Rece_File_Path"), _T("MaxFileNum"), 100, m_strCfgFile.c_str());
 
 		length = this->getReceFileCount();
 		for (int i = 0; i < length; i++)
 		{
 			GetPrivateProfileString(_T("Rece_File_Path"), m_ReceFile[i].strName.c_str(), _T(""), buf, BUFSIZ, m_strCfgFile.c_str());
-			m_ReceFile[i].strFilePath = m_ReceDir.m_strDirPath + "/" + buf;
+			m_ReceFile[i].strFilePath = m_ReceDir.strDirPath + "/" + buf;
 			if (!strcmp(buf, ""))
 			{
 				WORD wOrigin = setConsoleColor(12, 14);
 				cout << "Read " << m_ReceFile[i].strName << " in Rece_File_Path failed, using default value" << endl;
 				setConsoleColor(wOrigin);
 				m_lpLog->TRACE_ERR("Read %s in Rece_File_Path failed, using default value", m_ReceFile[i].strName.c_str());
-				m_ReceFile[i].strFilePath = m_ReceDir.m_strDirPath + "/Rece_" + m_ReceFile[i].strName + "_%VIN%.ini";
+				m_ReceFile[i].strFilePath = m_ReceDir.strDirPath + "/Rece_" + m_ReceFile[i].strName + "_%VIN%.ini";
 			}
 		}
 
@@ -194,7 +194,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Dir in Send_File_Path failed");
 		}
-		m_SendDir.m_strDirPath = "./SendFile/";
+		m_SendDir.strDirPath = "./SendFile/";
 
 		dwResult = WritePrivateProfileString(_T("Send_File_Path"), _T("MaxFileNum"), _T("100"), m_strCfgFile.c_str());
 		if (!dwResult) {
@@ -203,14 +203,25 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing MaxFileNum in Send_File_Path failed");
 		}
-		m_SendDir.m_iMaxFileNum = 100;
+		m_SendDir.iMaxFileNum = 100;
+
+		outfs.open(m_strCfgFile.c_str(), ios::app);
+		if (outfs.is_open()) {
+			outfs << "; <=0, no limit" << endl << endl;
+		} else {
+			WORD wOrigin = setConsoleColor(12, 14);
+			cout << "Writing MaxFileNum in Send_File_Path comment failed" << endl;
+			setConsoleColor(wOrigin);
+			m_lpLog->TRACE_ERR("Writing MaxFileNum in Send_File_Path comment failed");
+		}
+		outfs.close();
 
 		length = this->getSendFileCount();
 		for (int i = 0; i < length; i++)
 		{
 			string strFileName = "Send_" + m_SendFile[i].strName + "_%VIN%.ini";
 			dwResult = WritePrivateProfileString(_T("Send_File_Path"), m_SendFile[i].strName.c_str(), strFileName.c_str(), m_strCfgFile.c_str());
-			m_SendFile[i].strFilePath = m_SendDir.m_strDirPath + "/" + strFileName;
+			m_SendFile[i].strFilePath = m_SendDir.strDirPath + "/" + strFileName;
 			if (!dwResult)
 			{
 				WORD wOrigin = setConsoleColor(12, 14);
@@ -241,7 +252,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Dir in Rece_File_Path failed");
 		}
-		m_ReceDir.m_strDirPath = "./ReceFile/";
+		m_ReceDir.strDirPath = "./ReceFile/";
 
 		dwResult = WritePrivateProfileString(_T("Rece_File_Path"), _T("MaxFileNum"), _T("100"), m_strCfgFile.c_str());
 		if (!dwResult) {
@@ -250,14 +261,25 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing MaxFileNum in Rece_File_Path failed");
 		}
-		m_ReceDir.m_iMaxFileNum = 100;
+		m_ReceDir.iMaxFileNum = 100;
+
+		outfs.open(m_strCfgFile.c_str(), ios::app);
+		if (outfs.is_open()) {
+			outfs << "; <=0, no limit" << endl << endl;
+		} else {
+			WORD wOrigin = setConsoleColor(12, 14);
+			cout << "Writing MaxFileNum in Rece_File_Path comment failed" << endl;
+			setConsoleColor(wOrigin);
+			m_lpLog->TRACE_ERR("Writing MaxFileNum in Rece_File_Path comment failed");
+		}
+		outfs.close();
 
 		length = this->getReceFileCount();
 		for (int i = 0; i < length; i++)
 		{
 			string strFileName = "Rece_" + m_ReceFile[i].strName + "_%VIN%.ini";
 			dwResult = WritePrivateProfileString(_T("Rece_File_Path"), m_ReceFile[i].strName.c_str(), strFileName.c_str(), m_strCfgFile.c_str());
-			m_ReceFile[i].strFilePath = m_ReceDir.m_strDirPath + "/" + strFileName;
+			m_ReceFile[i].strFilePath = m_ReceDir.strDirPath + "/" + strFileName;
 			if (!dwResult)
 			{
 				WORD wOrigin = setConsoleColor(12, 14);

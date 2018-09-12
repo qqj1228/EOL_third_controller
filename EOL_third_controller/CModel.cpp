@@ -35,6 +35,7 @@ CModel::CModel(CConfig *lpCfg, Logger *lpLog)
 		InitINIFile();
 	}
 	InitMapDBTable();
+	InitDeleteFileMap();
 }
 
 CModel::CModel(CConfig *lpCfg, map<string, vector<FIELD>> &mapDBTable, Logger *lpLog)
@@ -69,6 +70,7 @@ CModel::CModel(CConfig *lpCfg, map<string, vector<FIELD>> &mapDBTable, Logger *l
 		InitINIFile();
 	}
 	m_mapDBTable = mapDBTable;
+	InitDeleteFileMap();
 }
 
 
@@ -410,13 +412,13 @@ void CModel::InitDeleteFileMap(multimap<time_t, string> &deleteFile, bool bSend)
 	long handle;
 	struct _finddata_t fileInfo;
 
-	string strDir = m_lpCfg->getDirInfo(bSend).m_strDirPath + "/*";
+	string strDir = m_lpCfg->getDirInfo(bSend).strDirPath + "/*";
 	handle = _findfirst(strDir.c_str(), &fileInfo);
 	if (handle != -1) {
 		do {
 			// È¥³ýÎÄ¼þ¼Ð
 			if (!(fileInfo.attrib & _A_SUBDIR)) {
-				deleteFile.insert(pair<time_t, string>(fileInfo.time_write, m_lpCfg->getDirInfo(bSend).m_strDirPath + fileInfo.name));
+				deleteFile.insert(pair<time_t, string>(fileInfo.time_write, m_lpCfg->getDirInfo(bSend).strDirPath + fileInfo.name));
 			}
 		} while (!_findnext(handle, &fileInfo));
 		_findclose(handle);
@@ -433,7 +435,7 @@ void CModel::InitDeleteFileMap(multimap<time_t, string> &deleteFile, bool bSend)
 	} else {
 		char err[BUFSIZ];
 		_strerror_s(err, nullptr);
-		cout << "_findfirst " << m_lpCfg->getDirInfo(bSend).m_strDirPath << " error: " << err << endl;
+		cout << "_findfirst " << m_lpCfg->getDirInfo(bSend).strDirPath << " error: " << err << endl;
 	}
 }
 
@@ -443,12 +445,34 @@ void CModel::InitDeleteFileMap() {
 }
 
 void CModel::UpdateDeleteFileMap(multimap<time_t, string> &deleteFile, bool bSend) {
-	InitDeleteFileMap(deleteFile, bSend);
-	int count = deleteFile.size() - (m_lpCfg->getDirInfo(bSend)).m_iMaxFileNum;
-	if (count > 0) {
-		for (int i = 0; i < count; i++) {
-			remove(deleteFile.begin()->second.c_str());
-			deleteFile.erase(deleteFile.begin());
+	struct _stat buf;
+	int result = 0;
+	if ((m_lpCfg->getDirInfo(bSend)).iMaxFileNum > 0) {
+		if (bSend) {
+			result = _stat(m_SendFile.strFilePath.c_str(), &buf);
+			if (result != 0) {
+				deleteFile.insert(pair<time_t, string>(buf.st_mtime, m_SendFile.strFilePath));
+			}
+		} else {
+			result = _stat(m_ReceFile[0].strFilePath.c_str(), &buf);
+			if (result != 0) {
+				deleteFile.insert(pair<time_t, string>(buf.st_mtime, m_ReceFile[0].strFilePath));
+			}
+			for (int i = 1; i < 3; i++) {
+				if (m_ReceFile[i].strFilePath != m_ReceFile[0].strFilePath) {
+					result = _stat(m_ReceFile[i].strFilePath.c_str(), &buf);
+					if (result != 0) {
+						deleteFile.insert(pair<time_t, string>(buf.st_mtime, m_ReceFile[i].strFilePath));
+					}
+				}
+			}
+		}
+		int count = deleteFile.size() - (m_lpCfg->getDirInfo(bSend)).iMaxFileNum;
+		if (count > 0) {
+			for (int i = 0; i < count; i++) {
+				remove(deleteFile.begin()->second.c_str());
+				deleteFile.erase(deleteFile.begin());
+			}
 		}
 	}
 }

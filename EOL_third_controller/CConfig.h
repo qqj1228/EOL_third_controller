@@ -42,8 +42,8 @@ struct INIVIN {
 };
 
 struct DIRINFO {
-	string m_strDirPath;
-	int m_iMaxFileNum;
+	string strDirPath;
+	int iMaxFileNum;
 };
 
 class CConfig
