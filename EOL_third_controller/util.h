@@ -5,7 +5,8 @@
 #include <Windows.h>
 #include <regex>
 #include <io.h>
-#include <direct.h> 
+#include <direct.h>
+#include <map>
 
 using namespace std;
 
@@ -106,4 +107,50 @@ static WORD setConsoleColor(WORD wAttributes) {
 		return 0;
 	}
 	return wOrigin;
+}
+
+// 删除指定目录内多余的文件，修改时间较旧的文件将会被删除
+// strDir, 文件所在的目录
+// iFileNum, 存放的文件数量
+static void updateFileNum(string strDir, int iFileNum) {
+	long handle;
+	struct _finddata_t fileInfo;
+	// multimap<修改时间，文件全路径>
+	multimap<time_t, string> fileMap;
+	string strFile = strDir + "/*";
+	handle = _findfirst(strFile.c_str(), &fileInfo);
+	if (handle != -1) {
+		do {
+			// 去除文件夹
+			if (!(fileInfo.attrib & _A_SUBDIR)) {
+				fileMap.insert(pair<time_t, string>(fileInfo.time_write, strDir + "/" + fileInfo.name));
+			}
+		} while (!_findnext(handle, &fileInfo));
+		_findclose(handle);
+
+#ifdef _DEBUG
+		multimap<time_t, string>::iterator iter;
+		multimap<time_t, string>::iterator end = fileMap.end();
+		for (iter = fileMap.begin(); iter != end; ++iter) {
+			cout << iter->first << " - " << iter->second << endl;
+		}
+		cout << "--------------------------------------" << endl;
+#endif // _DEBUG
+
+		if (iFileNum > 0) {
+			int count = fileMap.size() - iFileNum;
+			if (count > 0) {
+				for (int i = 0; i < count; i++) {
+					remove(fileMap.begin()->second.c_str());
+					fileMap.erase(fileMap.begin());
+				}
+			}
+		}
+	} else {
+		char err[BUFSIZ];
+		_strerror_s(err, nullptr);
+		WORD wOrigin = setConsoleColor(12, 14);
+		cout << "_findfirst " << strDir << " error: " << err << endl;
+		setConsoleColor(wOrigin);
+	}
 }

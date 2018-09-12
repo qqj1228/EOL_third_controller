@@ -429,13 +429,15 @@ void CModel::InitDeleteFileMap(multimap<time_t, string> &deleteFile, bool bSend)
 		for (iter = deleteFile.begin(); iter != end; ++iter) {
 			cout << iter->first << " - " << iter->second << endl;
 		}
-		cout << "============================" << endl;
+		cout << "--------------------------------------" << endl;
 #endif // _DEBUG
 
 	} else {
 		char err[BUFSIZ];
 		_strerror_s(err, nullptr);
+		WORD wOrigin = setConsoleColor(12, 14);
 		cout << "_findfirst " << m_lpCfg->getDirInfo(bSend).strDirPath << " error: " << err << endl;
+		setConsoleColor(wOrigin);
 	}
 }
 
@@ -447,22 +449,39 @@ void CModel::InitDeleteFileMap() {
 void CModel::UpdateDeleteFileMap(multimap<time_t, string> &deleteFile, bool bSend) {
 	struct _stat buf;
 	int result = 0;
+	char err[BUFSIZ];
+
 	if ((m_lpCfg->getDirInfo(bSend)).iMaxFileNum > 0) {
 		if (bSend) {
 			result = _stat(m_SendFile.strFilePath.c_str(), &buf);
-			if (result != 0) {
+			if (result == 0) {
 				deleteFile.insert(pair<time_t, string>(buf.st_mtime, m_SendFile.strFilePath));
+			} else {
+				_strerror_s(err, nullptr);
+				WORD wOrigin = setConsoleColor(12, 14);
+				cout << "_findfirst " << m_lpCfg->getDirInfo(bSend).strDirPath << " error: " << err << endl;
+				setConsoleColor(wOrigin);
 			}
 		} else {
 			result = _stat(m_ReceFile[0].strFilePath.c_str(), &buf);
-			if (result != 0) {
+			if (result == 0) {
 				deleteFile.insert(pair<time_t, string>(buf.st_mtime, m_ReceFile[0].strFilePath));
+			} else {
+				_strerror_s(err, nullptr);
+				WORD wOrigin = setConsoleColor(12, 14);
+				cout << "_findfirst " << m_lpCfg->getDirInfo(bSend).strDirPath << " error: " << err << endl;
+				setConsoleColor(wOrigin);
 			}
 			for (int i = 1; i < 3; i++) {
 				if (m_ReceFile[i].strFilePath != m_ReceFile[0].strFilePath) {
 					result = _stat(m_ReceFile[i].strFilePath.c_str(), &buf);
-					if (result != 0) {
+					if (result == 0) {
 						deleteFile.insert(pair<time_t, string>(buf.st_mtime, m_ReceFile[i].strFilePath));
+					} else {
+						_strerror_s(err, nullptr);
+						WORD wOrigin = setConsoleColor(12, 14);
+						cout << "_findfirst " << m_lpCfg->getDirInfo(bSend).strDirPath << " error: " << err << endl;
+						setConsoleColor(wOrigin);
 					}
 				}
 			}

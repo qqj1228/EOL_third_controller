@@ -21,7 +21,7 @@
 		- 除 `Dir`、`MaxFileNum` 外其余4个选项表示发送给FORI检测设备的INI文件名。文件名可以包含%VIN%这一个通配符，用来表示VIN码。例如：
 			- 设传入的VIN码为 `testvincode012345` ，则 `Send_NCA_%VIN%.ini` 实际表示 `Send_NCA_testvincode012345.ini` 。
 		- Dir：表示发送给FORI检测设备的INI文件所在的目录地址，可以是绝对路径也可以是相对路径。
-		- MaxFileNum：表示在 `Dir` 目录下的可以存在的最多文件数量，若文件数量多于该选项的话，将会把修改时间最早的文件删除。
+		- MaxFileNum：表示在 `Dir` 目录下的可以存在的最多文件数量，若文件数量多于该选项的话，将会把修改时间最早的文件删除。若设为小于等于0的数值的话则不限制 `Dir` 目录下的文件数量。
 	- Rece_File_Path：该节下的8个选项用来设置FORI发送过来的检测结果INI文件的路径和文件名，同样可以用%VIN%指代VIN码。各个选项意义同上一条。
 	- DataBase：该节下的配置项用于配置SQL Server数据库参数。
 		- IP：SQL Server数据库IP地址
