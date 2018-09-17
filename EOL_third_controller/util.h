@@ -72,9 +72,11 @@ static int32_t mkMultiDir(const std::string &directoryPath)
 }
 
 // 设置控制台文字前景和背景色, 返回原来的颜色属性
-// 0-黑		1-蓝		2-绿		3-浅绿		4-红		5-紫		6-黄		7-白
-// 8-灰		9-淡蓝	10-淡绿	11-淡浅绿	12-淡红	13-淡紫	14-淡黄	15-亮白
-static WORD setConsoleColor(int iForeColor, int iBackColor) {
+// 基本色：0x1-蓝，0x2-绿，0x4-红，0x8-加亮。
+// 组合色：
+// 0-黑		1-蓝		2-绿		3-青		4-红		5-紫		6-黄		7-白
+// 8-灰		9-亮蓝	10-亮绿	11-亮青	12-亮红	13-亮紫	14-亮黄	15-亮白
+static WORD setConsoleColor(int iForeColor, int iBackColor = 0) {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (hConsole == INVALID_HANDLE_VALUE) {
 		return 0;

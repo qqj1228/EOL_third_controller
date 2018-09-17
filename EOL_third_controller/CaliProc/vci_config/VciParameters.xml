@@ -1,0 +1,27 @@
+<VciConfiguration>
+  <device_Property>
+    <deviceID>1</deviceID>
+    <commType>Socket</commType>
+    <serialPort>1</serialPort>
+    <baudrate>0</baudrate>
+    <socketPort>10001</socketPort>
+    <ipAddress>127.0.0.1</ipAddress>
+
+    <channel_Property>
+      <ID>0</ID>
+      <protocol>CAN_DW</protocol>
+      <baudrate>500000</baudrate>
+      <CAN_29bit>0</CAN_29bit>
+      <separationTime>5</separationTime>
+      <padding>170</padding>
+    </channel_Property>
+
+    <channel_Property>
+      <ID>6</ID>
+      <Protocol>KWP</Protocol>
+      <baudrate>10400</baudrate>
+      <P3_time>64</P3_time>
+    </channel_Property>
+
+  </device_Property>
+</VciConfiguration>
