@@ -232,8 +232,7 @@ string Socket_Base::ReceiveLine() {
 		}
 	} else {
 		// UDP协议下，每次接收缓冲区中一帧完整数据，直到收到含有"换行"符的数据
-		SOCKADDR from;
-		int len = sizeof(from);
+		int len = sizeof(UDPFrom_);
 		while (true) {
 			u_long arg = 0;
 			if (ioctlsocket(s_, FIONREAD, &arg) != 0) {
@@ -243,7 +242,7 @@ string Socket_Base::ReceiveLine() {
 			if (arg == 0)
 				continue;
 			char *pBuf = new char[arg + 1];
-			int rv = recvfrom(s_, pBuf, arg, 0, &from, &len);
+			int rv = recvfrom(s_, pBuf, arg, 0, &UDPFrom_, &len);
 			switch (rv) {
 			case 0:
 				break;
@@ -270,33 +269,39 @@ string Socket_Base::ReceiveLine() {
 }
 
 // strDestIP, iDestPort用于UDP
-void Socket_Base::SendLine(string s, string strDestIP = "127.0.0.1", int iDestPort = 10002) {
-	s += '\n';
+void Socket_Base::SendLine(string s, string strDestIP, int iDestPort) {
+	s += "\r\n";
 	if (bTCP) {
 		send(s_, s.c_str(), s.length(), 0);
 	} else {
-		sockaddr_in destAddr;
-		memset(&destAddr, 0, sizeof(destAddr));
-		destAddr.sin_family = PF_INET;
-		destAddr.sin_addr.s_addr = inet_addr(strDestIP.c_str());
-		destAddr.sin_port = htons(iDestPort);
-
-		sendto(s_, s.c_str(), s.length(), 0, (sockaddr*)&destAddr, sizeof(destAddr));
+		if (strDestIP == "") {
+			sendto(s_, s.c_str(), s.length(), 0, &UDPFrom_, sizeof(UDPFrom_));
+		} else {
+			sockaddr_in destAddr;
+			memset(&destAddr, 0, sizeof(destAddr));
+			destAddr.sin_family = PF_INET;
+			destAddr.sin_addr.s_addr = inet_addr(strDestIP.c_str());
+			destAddr.sin_port = htons(iDestPort);
+			sendto(s_, s.c_str(), s.length(), 0, (sockaddr*)&destAddr, sizeof(destAddr));
+		}
 	}
 }
 
 // strDestIP, iDestPort用于UDP
-void Socket_Base::SendBytes(const char *pBuf, int size, string strDestIP = "127.0.0.1", int iDestPort = 10002) {
+void Socket_Base::SendBytes(const char *pBuf, int size, string strDestIP, int iDestPort) {
 	if (bTCP) {
 		send(s_, pBuf, size, 0);
 	} else {
-		sockaddr_in destAddr;
-		memset(&destAddr, 0, sizeof(destAddr));
-		destAddr.sin_family = PF_INET;
-		destAddr.sin_addr.s_addr = inet_addr(strDestIP.c_str());
-		destAddr.sin_port = htons(iDestPort);
-
-		sendto(s_, pBuf, size, 0, (sockaddr*)&destAddr, sizeof(destAddr));
+		if (strDestIP == "") {
+			sendto(s_, pBuf, size, 0, &UDPFrom_, sizeof(UDPFrom_));
+		} else {
+			sockaddr_in destAddr;
+			memset(&destAddr, 0, sizeof(destAddr));
+			destAddr.sin_family = PF_INET;
+			destAddr.sin_addr.s_addr = inet_addr(strDestIP.c_str());
+			destAddr.sin_port = htons(iDestPort);
+			sendto(s_, pBuf, size, 0, (sockaddr*)&destAddr, sizeof(destAddr));
+		}
 	}
 }
 

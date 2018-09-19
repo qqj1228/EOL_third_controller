@@ -38,7 +38,8 @@ struct SOCKETCFG {
 struct INIVIN {
 	string fullName;
 	string section;
-	string key;
+	string VIN_key;
+	string Result_key;
 };
 
 struct DIRINFO {

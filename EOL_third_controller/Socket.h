@@ -24,8 +24,8 @@ public:
 	string ReceiveLine();
 	vector<char> ReceiveBytes();
 
-	void SendLine(string s, string strDestIP, int iDestPort);
-	void SendBytes(const char *pBuf, int size, string strDestIP, int iDestPort);
+	void SendLine(string s, string strDestIP = "", int iDestPort = 0);
+	void SendBytes(const char *pBuf, int size, string strDestIP = "", int iDestPort = 0);
 
 protected:
 	friend class SocketServer;
@@ -35,6 +35,7 @@ protected:
 
 	SOCKET s_;
 	bool bTCP;
+	SOCKADDR UDPFrom_;
 	int* refCounter_;
 
 private:

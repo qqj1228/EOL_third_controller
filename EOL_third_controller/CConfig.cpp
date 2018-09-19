@@ -141,11 +141,14 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		GetPrivateProfileString(_T("INIVIN"), _T("FullName"), _T("./ReceFile/Rece_VIN.ini"), buf, BUFSIZ, m_strCfgFile.c_str());
 		m_INIVIN.fullName = buf;
 
-		GetPrivateProfileString(_T("INIVIN"), _T("Section"), _T("VIN"), buf, BUFSIZ, m_strCfgFile.c_str());
+		GetPrivateProfileString(_T("INIVIN"), _T("Section"), _T("Data"), buf, BUFSIZ, m_strCfgFile.c_str());
 		m_INIVIN.section = buf;
 
-		GetPrivateProfileString(_T("INIVIN"), _T("Key"), _T("VIN"), buf, BUFSIZ, m_strCfgFile.c_str());
-		m_INIVIN.key = buf;
+		GetPrivateProfileString(_T("INIVIN"), _T("VIN_Key"), _T("VIN"), buf, BUFSIZ, m_strCfgFile.c_str());
+		m_INIVIN.VIN_key = buf;
+
+		GetPrivateProfileString(_T("INIVIN"), _T("Result_Key"), _T("Result"), buf, BUFSIZ, m_strCfgFile.c_str());
+		m_INIVIN.Result_key = buf;
 
 	}
 	else // 生成默认INI文件
@@ -566,23 +569,32 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		m_INIVIN.fullName = "./ReceFile/Rece_VIN.ini";
 
-		dwResult = WritePrivateProfileString(_T("INIVIN"), _T("Section"), _T("VIN"), m_strCfgFile.c_str());
+		dwResult = WritePrivateProfileString(_T("INIVIN"), _T("Section"), _T("Data"), m_strCfgFile.c_str());
 		if (!dwResult) {
 			WORD wOrigin = setConsoleColor(12, 14);
 			cout << "Writing Section of INIVIN failed" << endl;
 			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Section of INIVIN failed");
 		}
-		m_INIVIN.section = "VIN";
+		m_INIVIN.section = "Data";
 
-		dwResult = WritePrivateProfileString(_T("INIVIN"), _T("Key"), _T("VIN"), m_strCfgFile.c_str());
+		dwResult = WritePrivateProfileString(_T("INIVIN"), _T("VIN_Key"), _T("VIN"), m_strCfgFile.c_str());
 		if (!dwResult) {
 			WORD wOrigin = setConsoleColor(12, 14);
-			cout << "Writing Key of INIVIN failed" << endl;
+			cout << "Writing VIN_Key of INIVIN failed" << endl;
 			setConsoleColor(wOrigin);
-			m_lpLog->TRACE_ERR("Writing Key of INIVIN failed");
+			m_lpLog->TRACE_ERR("Writing VIN_Key of INIVIN failed");
 		}
-		m_INIVIN.key = "VIN";
+		m_INIVIN.VIN_key = "VIN";
+
+		dwResult = WritePrivateProfileString(_T("INIVIN"), _T("Result_Key"), _T("Result"), m_strCfgFile.c_str());
+		if (!dwResult) {
+			WORD wOrigin = setConsoleColor(12, 14);
+			cout << "Writing Result_Key of INIVIN failed" << endl;
+			setConsoleColor(wOrigin);
+			m_lpLog->TRACE_ERR("Writing Result_Key of INIVIN failed");
+		}
+		m_INIVIN.Result_key = "Result";
 	}
 	this->doReplace();
 	this->getINIConfig();
