@@ -324,7 +324,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 			setConsoleColor(wOrigin);
 			m_lpLog->TRACE_ERR("Writing Port of DataBase failed");
 		}
-		m_strPort = "2272";
+		m_strPort = "1433";
 
 		dwResult = WritePrivateProfileString(_T("DataBase"), _T("User"), _T("sa"), m_strCfgFile.c_str());
 		if (!dwResult)
