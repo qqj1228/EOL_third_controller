@@ -103,7 +103,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		GetPrivateProfileString(_T("DataBase"), _T("IP"), _T("127.0.0.1"), buf, BUFSIZ, m_strCfgFile.c_str());
 		m_strIP = buf;
 
-		GetPrivateProfileString(_T("DataBase"), _T("Port"), _T("2272"), buf, BUFSIZ, m_strCfgFile.c_str());
+		GetPrivateProfileString(_T("DataBase"), _T("Port"), _T("1433"), buf, BUFSIZ, m_strCfgFile.c_str());
 		m_strPort = buf;
 
 		GetPrivateProfileString(_T("DataBase"), _T("User"), _T("sa"), buf, BUFSIZ, m_strCfgFile.c_str());
@@ -316,7 +316,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 		}
 		m_strIP = "127.0.0.1";
 
-		dwResult = WritePrivateProfileString(_T("DataBase"), _T("Port"), _T("2272"), m_strCfgFile.c_str());
+		dwResult = WritePrivateProfileString(_T("DataBase"), _T("Port"), _T("1433"), m_strCfgFile.c_str());
 		if (!dwResult)
 		{
 			WORD wOrigin = setConsoleColor(12, 14);
