@@ -246,7 +246,7 @@ void Logger::UpdateFileQty() {
 		_findclose(handle);
 
 		if (m_iMaxFileQty > 0) {
-			int count = fileMap.size() - m_iMaxFileQty - 1;
+			int count = fileMap.size() - m_iMaxFileQty + 1;
 			if (count > 0) {
 				for (int i = 0; i < count; i++) {
 					remove(fileMap.begin()->second.c_str());
