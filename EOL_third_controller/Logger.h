@@ -43,7 +43,7 @@ public:
 	//默认构造函数
 	Logger();
 	//构造函数
-	Logger(const char * strLogPath, EnumLogLevel nLogLevel = EnumLogLevel::LogLevelNormal);
+	Logger(const char * strLogPath, const int iMaxFileQty = 0, EnumLogLevel nLogLevel = EnumLogLevel::LogLevelNormal);
 	//析构函数
 	virtual ~Logger();
 public:
@@ -73,6 +73,8 @@ private:
 	void CreateLogPath();
 	// 关闭文件流
 	void CloseFile();
+	// 控制文件数量
+	void UpdateFileQty();
 private:
 	//写日志文件流
 	FILE * m_pFileStream;
@@ -84,4 +86,6 @@ private:
 	char m_strCurLogName[MAX_STR_LEN];
 	//线程同步的临界区变量
 	CRITICAL_SECTION m_cs;
+	// 日志目录内的文件数量最大值
+	int m_iMaxFileQty;
 };

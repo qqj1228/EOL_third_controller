@@ -12,6 +12,7 @@ Logger::Logger()
 	memset(m_strLogPath, 0, MAX_STR_LEN);
 	memset(m_strCurLogName, 0, MAX_STR_LEN);
 	m_pFileStream = NULL;
+	m_iMaxFileQty = 0;
 	//设置默认的写日志级别
 	m_nLogLevel = EnumLogLevel::LogLevelNormal;
 	//初始化临界区变量
@@ -21,7 +22,7 @@ Logger::Logger()
 }
 
 //构造函数
-Logger::Logger(const char * strLogPath, EnumLogLevel nLogLevel) :m_nLogLevel(nLogLevel)
+Logger::Logger(const char * strLogPath, const int iMaxFileQty, EnumLogLevel nLogLevel) : m_iMaxFileQty(iMaxFileQty), m_nLogLevel(nLogLevel)
 {
 	//初始化
 	m_pFileStream = NULL;
@@ -158,6 +159,8 @@ void Logger::Trace(const char * strInfo)
 	{
 		//进入临界区
 		EnterCriticalSection(&m_cs);
+		//获取可能的新日志文件名
+		GenerateLogName();
 		//若文件流没有打开，则重新打开
 		if (!m_pFileStream)
 		{
@@ -192,15 +195,16 @@ void Logger::GenerateLogName()
 	tm timeInfo;
 	time(&curTime);
 	localtime_s(&timeInfo, &curTime);
-	char temp[1024] = { 0 };
+	char temp[MAX_STR_LEN] = { 0 };
 	//日志的名称如：2013-01-01.log
 	sprintf_s(temp, "%04d-%02d-%02d.log", timeInfo.tm_year + 1900, timeInfo.tm_mon + 1, timeInfo.tm_mday);
 	if (0 != strcmp(m_strCurLogName, temp))
 	{
+		UpdateFileQty();
 		strcpy_s(m_strCurLogName, temp);
 		if (m_pFileStream)
 			fclose(m_pFileStream);
-		char temp[1024] = { 0 };
+		char temp[MAX_STR_LEN] = { 0 };
 		strcat_s(temp, m_strLogPath);
 		strcat_s(temp, m_strCurLogName);
 		//以追加的方式打开文件流
@@ -217,4 +221,44 @@ void Logger::CreateLogPath()
 		strcat_s(m_strLogPath, "\\");
 	}
 	mkMultiDir(m_strLogPath);
+}
+
+// 控制文件数量
+// 删除日志目录内多余的文件，修改时间较旧的文件将会被删除
+void Logger::UpdateFileQty() {
+	long handle;
+	struct _finddata_t fileInfo;
+	char temp[MAX_STR_LEN] = { 0 };
+	// multimap<修改时间，文件全路径>
+	multimap<time_t, string> fileMap;
+	strcpy_s(temp, m_strLogPath);
+	strcat_s(temp, "*");
+	handle = _findfirst(temp, &fileInfo);
+	if (handle != -1) {
+		do {
+			// 去除文件夹
+			if (!(fileInfo.attrib & _A_SUBDIR)) {
+				strcpy_s(temp, m_strLogPath);
+				strcat_s(temp, fileInfo.name);
+				fileMap.insert(pair<time_t, string>(fileInfo.time_write, temp));
+			}
+		} while (!_findnext(handle, &fileInfo));
+		_findclose(handle);
+
+		if (m_iMaxFileQty > 0) {
+			int count = fileMap.size() - m_iMaxFileQty - 1;
+			if (count > 0) {
+				for (int i = 0; i < count; i++) {
+					remove(fileMap.begin()->second.c_str());
+					fileMap.erase(fileMap.begin());
+				}
+			}
+		}
+	} else {
+		char err[BUFSIZ];
+		_strerror_s(err, nullptr);
+		WORD wOrigin = setConsoleColor(12, 14);
+		cout << "_findfirst " << m_strLogPath << " error: " << err << endl;
+		setConsoleColor(wOrigin);
+	}
 }
