@@ -124,7 +124,7 @@ CConfig::CConfig(string strVIN, Logger *lpLog)
 
 		m_iTimeout = GetPrivateProfileInt(_T("Communication"), _T("Timeout"), 600, m_strCfgFile.c_str());
 
-		m_SerialPort.dwPort = (DWORD)GetPrivateProfileInt(_T("Serial_Port"), _T("Port"), 2, m_strCfgFile.c_str());
+		m_SerialPort.dwPort = (DWORD)GetPrivateProfileInt(_T("Serial_Port"), _T("Port"), 0, m_strCfgFile.c_str());
 
 		m_SerialPort.dwBaudRate = (DWORD)GetPrivateProfileInt(_T("Serial_Port"), _T("Baud_Rate"), 9600, m_strCfgFile.c_str());
 
