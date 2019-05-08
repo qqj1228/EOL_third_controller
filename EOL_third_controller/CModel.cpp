@@ -357,10 +357,31 @@ bool CModel::ReadReceFileSingle(int iIndex)
 	vector<FIELD> vFields;
 	TCHAR buf[BUFSIZ];
 	string strNor;
+	struct _stat statBuf;
+	time_t time = 0;
 
 	if (_access(m_ReceFile[iIndex].strFilePath.c_str(), 0) != 0)
 	{
 		return false;
+	}
+	while (true)
+	{
+		if (_stat(m_ReceFile[iIndex].strFilePath.c_str(), &statBuf) == 0)
+		{
+			if (time == statBuf.st_mtime)
+			{
+				break;
+			}
+			else
+			{
+				time = statBuf.st_mtime;
+			}
+		}
+		else
+		{
+			return false;
+		}
+		Sleep(1000);
 	}
 	strTableName = m_ReceFile[iIndex].strName + "Result";
 	// 从m_mapDBTable中获取字段信息vector
