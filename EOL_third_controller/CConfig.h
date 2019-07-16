@@ -133,4 +133,5 @@ public:
     int getType();
     DIRINFO getDirInfo(bool bSend, int index);
     int getDirCount(bool bSend);
+    string getNCAStateFile();
 };

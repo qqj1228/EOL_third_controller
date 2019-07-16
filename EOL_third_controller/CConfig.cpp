@@ -329,3 +329,7 @@ int CConfig::getDirCount(bool bSend) {
         return sizeof(m_ReceDir) / sizeof(m_ReceDir[0]);
     }
 }
+
+string CConfig::getNCAStateFile() {
+    return m_strNCAStateFile;
+}

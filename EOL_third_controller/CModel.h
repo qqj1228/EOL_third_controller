@@ -42,7 +42,7 @@ public:
     void InitDeleteFileMap(multimap<time_t, string> &deleteFile, int index, bool bSend);
     void InitDeleteFileMap();
     void UpdateDeleteFileMap(multimap<time_t, string> &deleteFile, int index, bool bSend);
-    int getSendFileCount();
-    int getReceFileCount();
+    bool GetCaliSignal();
+    bool CheckCaliDone();
 };
 

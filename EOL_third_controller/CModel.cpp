@@ -505,3 +505,27 @@ void CModel::UpdateDeleteFileMap(multimap<time_t, string> &deleteFile, int index
         }
     }
 }
+
+bool CModel::GetCaliSignal() {
+    if (_access(m_lpCfg->getNCAStateFile().c_str(), 0) != 0) {
+        return false;
+    }
+    // 一旦有了StateFile文件，就可以开始标定了
+    string strSQL = "insert CaliProcStatus values ('" + m_lpCfg->getVIN() + "', '2')";
+    if (!m_lpADO->ExecuteSQL(strSQL.c_str())) {
+        m_lpLog->TRACE_ERR("Error SQL: %s", strSQL.c_str());
+    }
+    return true;
+}
+
+bool CModel::CheckCaliDone() {
+    string strSQL = "select Status from CaliProcStatus where VIN = '" + m_lpCfg->getVIN() + "'";
+    m_lpADO->GetRecordSet(strSQL.c_str());
+    if (m_lpADO->GetRecord("Status", 0) == "") {
+        remove(m_lpCfg->getNCAStateFile().c_str());
+        m_lpADO->RecordSetClose();
+        return true;
+    }
+    m_lpADO->RecordSetClose();
+    return false;
+}
